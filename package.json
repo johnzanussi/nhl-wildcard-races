@@ -1,16 +1,25 @@
 {
-  "name": "wildcard-races",
-  "type": "module",
-  "version": "0.0.1",
+  "name": "nhl-wildcard-races",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnzanussi/nhl-wildcard-races.git"
+  },
+  "author": "John Zanussi",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://nhl-wildcard-races.vercel.app/",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
     "@tailwindcss/vite": "^4.0.17",
     "astro": "^5.5.5",
-    "tailwindcss": "^4.0.17"
+    "tailwindcss": "^4.0.17",
+    "typescript": "^5.8.2"
   }
 }

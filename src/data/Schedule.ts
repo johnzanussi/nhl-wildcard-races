@@ -1,41 +1,45 @@
-const regSeasonGames = 82;
+import { type TeamCode, getTeamSchedule } from '@/data/nhl';
+import { type GamePlayed, type GameUnplayed, type Game } from '@/data/Teams';
 
-const getTeamSchedule = async (teamCode) => {
-    const season = '20242025';
-    const response = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${teamCode}/${season}`);
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch standings');
-    }
-
-    return await response.json();
-
-}
-
-export const getLastGames = async (teamCode, numGames = 20) => {
+export const getLastGames = async (teamCode: TeamCode, numGames = 20): Promise<Game[]> => {
 
     const schedule = await getTeamSchedule(teamCode);
 
-    const lastGames = schedule.games.slice(-numGames).map((game, i) => {
+    const lastGames = schedule.games.slice(-numGames).map((apiGame) => {
 
-        const isHome = game.homeTeam.abbrev === teamCode;
+        const isHome = apiGame.homeTeam.abbrev === teamCode;
 
-        const team = isHome ? game.homeTeam : game.awayTeam;
-        const opponent = isHome ? game.awayTeam : game.homeTeam;
+        const team = isHome ? apiGame.homeTeam : apiGame.awayTeam;
+        const opponent = isHome ? apiGame.awayTeam : apiGame.homeTeam;
 
-        const result = game.gameOutcome ? team.score > opponent.score ? 'win' : 'loss' : null;
-        const lastPeriodType = game.gameOutcome ? game.gameOutcome.lastPeriodType : null; // REG, OT, SO
-
-        const points = result === 'win' ? 2 : lastPeriodType === 'OT' || lastPeriodType === 'SO' ? 1 : 0;
-
-        return {
-            gameNum: regSeasonGames - numGames + (i+1), // Game number in the season (1 to 82)
+        const baseGame: GameUnplayed = {
+            id: apiGame.id,
+            date: apiGame.gameDate,
+            team: team.abbrev,
             opponent: opponent.abbrev,
-            score: game.gameOutcome ? `${team.score} - ${opponent.score}` : null,
-            result: result,
-            lastPeriodType: lastPeriodType,
-            gamePoints: game.gameOutcome ? points : null,
+            isComplete: false,
         };
+
+        if (apiGame.gameOutcome) {
+
+            const result = (team.score || 0) > (opponent.score || 0) ? 'win' : 'loss';
+            const gameEnd = apiGame.gameOutcome.lastPeriodType;
+            const points = result === 'win' ? 2 : gameEnd === 'OT' || gameEnd === 'SO' ? 1 : 0;
+
+            const game: GamePlayed = {
+                ...baseGame,
+                isComplete: true,
+                score: `${team.score} - ${opponent.score}`,
+                result: result,
+                points: points,
+                gameEnd: gameEnd,
+                totalPoints: 0,
+            };
+
+            return game;
+        }
+
+        return baseGame;
 
     });
 

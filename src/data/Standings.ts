@@ -1,20 +1,20 @@
 
-export const fetchStandings = async () => {
-    const date = new Date().toISOString().split('T')[0];
-    const response = await fetch(`https://api-web.nhle.com/v1/standings/${date}`);
+import { fetchStandings, type ConferenceAbbrev, type TeamCode } from '@/data/nhl';
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch standings');
-    }
-
-    return await response.json();
+type Standings = {
+    teamCode: TeamCode;
+    wildcardPlace: number;
+    gamesPlayed: number;
+    points: number;
 };
+
+type Conferences = Record<ConferenceAbbrev, Standings[]>;
 
 export const getWildcardTeams = async () => {
 
     const standings = await fetchStandings();
 
-    const conferences =  {
+    const conferences: Conferences = {
         E: [],
         W: [],
     };

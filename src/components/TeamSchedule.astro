@@ -1,5 +1,5 @@
 ---
-import { type TeamCode } from '@/data/Teams.ts';
+import { type TeamCode } from '@/data/nhl';
 
 import { getLastGames } from '@/data/Schedule.ts';
 import GameResult from './GameResult.astro';
@@ -17,18 +17,18 @@ const {
 const results = await getLastGames(teamCode, 25);
 
 const pointsFromGames = results.reduce((accum, game) => {
-    return accum + game.gamePoints;
+    return accum + (game.isComplete ? game.points : 0);
 }, 0);
 
 let runningPoints = points - pointsFromGames;
 
 const resultsWithPoints = results.map(game => {
 
-    runningPoints += game.gamePoints; // Update running points after each game
+    runningPoints += (game.isComplete ? game.points : 0);
 
     return {
         ...game,
-        totalPoints: game.score ? runningPoints : null,
+        totalPoints: game.isComplete ? runningPoints : null,
     }
 
 });
