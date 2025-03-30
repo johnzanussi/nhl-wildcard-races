@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from '@/layouts/Layout.astro';
+import TeamHeader from '@/components/TeamHeader.astro';
+import TeamSchedule from '@/components/TeamSchedule.astro';
+import Link from '@/components/Link.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { type TeamCode } from '@/data/Teams.ts';
+
+import { getWildcardTeams } from '@/data/Standings.ts';
+
+const wildcardTeams = await getWildcardTeams();
+
+const confs = {
+	E: 'East',
+	W: 'West',
+};
 ---
 
 <Layout>
-	<Welcome />
+
+	<h1 class="text-3xl mb-6">
+		NHL Wildcard Races
+	</h1>
+
+	{Object.entries(wildcardTeams).map(([confCode, teams]) => {
+
+		return (
+
+			<h2 class="font-medium text-2xl mb-4">
+				{confs[confCode]}
+			</h2>
+
+			<div>
+				{teams.map((team) => {
+					return (
+						<div class="rounded-lg bg-white p-6 shadow mb-4 w-[fit-content]">
+							<TeamHeader teamCode={team.teamCode} />
+							<TeamSchedule
+								teamCode={team.teamCode}
+								points={team.points}
+							/>
+						</div>
+					);
+				})}
+			</div>
+		);
+
+	})}
+
+	<p class="text-center my-12">
+		Built by <Link href="https://johnzanussi.com/">John Zanussi</Link> with <Link href="https://astro.build/">Astro</Link> and <Link href="https://tailwindcss.com/">Tailwind</Link>. <br />Inspired by <Link href="https://www.reddit.com/r/hockey/comments/1jn7rlh/wildcard_races_mar_29/">u/Sarke1</Link>.
+	</p>
+
 </Layout>

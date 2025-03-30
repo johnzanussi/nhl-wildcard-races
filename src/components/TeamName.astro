@@ -1,0 +1,13 @@
+---
+import { getTeamName, type TeamCode } from '@/data/Teams.ts';
+
+type Props = {
+    teamCode: TeamCode;
+}
+
+const teamName = getTeamName(Astro.props.teamCode);
+---
+
+<h3 class="font-medium text-xl">
+    {teamName}
+</h3>

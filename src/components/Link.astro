@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+export type Props = HTMLAttributes<'a'>;
+
+const { href, ...props } = Astro.props;
+
+if (href?.toString().startsWith('http')) {
+    props.target = '_blank';
+    props.rel = 'noopener noreferrer';
+}
+// No new lines because the white
+// space was being preserved in MDX
+---
+<a href={href} {...props} class="text-blue-500"><slot /></a>

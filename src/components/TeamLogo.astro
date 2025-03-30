@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import { type TeamCode, type LogoType, getTeamLogoUrl, getTeamName } from '@/data/Teams.ts';
+
+type Props = {
+    teamCode: TeamCode;
+    type?: LogoType;
+};
+
+const {
+    teamCode,
+    type
+} = Astro.props;
+
+const imageUrl = getTeamLogoUrl(teamCode, type);
+const teamName = getTeamName(teamCode);
+---
+
+<Image
+    src={imageUrl}
+    alt={teamName}
+    width="50"
+    height="50"
+    loading="lazy"
+    class="inline"
+/>

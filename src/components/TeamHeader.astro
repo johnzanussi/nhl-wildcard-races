@@ -1,0 +1,15 @@
+---
+import { type TeamCode } from '@/data/Teams.ts';
+
+import TeamLogo from '@/components/TeamLogo.astro';
+import TeamName from '@/components/TeamName.astro';
+
+type Props = {
+    teamCode: TeamCode;
+};
+---
+
+<div class="flex items-center space-x-2 mb-4">
+    <TeamLogo teamCode={Astro.props.teamCode} />
+    <TeamName teamCode={Astro.props.teamCode} />
+</div>

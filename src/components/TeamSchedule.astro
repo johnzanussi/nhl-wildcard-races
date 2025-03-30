@@ -1,0 +1,45 @@
+---
+import { type TeamCode } from '@/data/Teams.ts';
+
+import { getLastGames } from '@/data/Schedule.ts';
+import GameResult from './GameResult.astro';
+
+type Props = {
+    teamCode: TeamCode;
+    points: number;
+}
+
+const {
+    teamCode,
+    points,
+} = Astro.props;
+
+const results = await getLastGames(teamCode, 25);
+
+const pointsFromGames = results.reduce((accum, game) => {
+    return accum + game.gamePoints;
+}, 0);
+
+let runningPoints = points - pointsFromGames;
+
+const resultsWithPoints = results.map(game => {
+
+    runningPoints += game.gamePoints; // Update running points after each game
+
+    return {
+        ...game,
+        totalPoints: game.score ? runningPoints : null,
+    }
+
+});
+---
+
+<div class="flex gap-2">
+
+    {resultsWithPoints.map(game => {
+        return (
+            <GameResult game={game} />
+        );
+    })}
+
+</div>

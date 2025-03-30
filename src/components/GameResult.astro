@@ -1,0 +1,36 @@
+---
+import TeamLogo from './TeamLogo.astro';
+
+const {
+    game,
+} = Astro.props;
+---
+<div class="text-center">
+
+    <div class="text-xs font-medium h-4">
+        {game.score ?? ``}
+    </div>
+
+    <div class:list={[
+        'rounded relative size-[55px] text-center flex items-center my-1',
+        {
+            'bg-green-500': game.result === 'win', // Win
+            'bg-red-800': game.result === 'loss' && game.lastPeriodType === 'REG', // Regulation Loss
+            'bg-yellow-600': game.result === 'loss' && game.lastPeriodType !== 'REG', // Regulation Loss
+            'bg-zinc-400': !game.result,
+        }
+    ]}>
+
+        <div class="opacity-75 text-center w-full">
+            <TeamLogo teamCode={game.opponent} />
+        </div>
+    </div>
+
+
+    {!!game.totalPoints && (
+        <div class="text-xs font-medium">
+            {game.totalPoints}
+        </div>
+    )}
+
+</div>
