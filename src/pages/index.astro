@@ -4,16 +4,16 @@ import TeamHeader from '@/components/TeamHeader.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
 import Link from '@/components/Link.astro';
 
-import { type TeamCode } from '@/data/Teams.ts';
-
 import { getWildcardTeams } from '@/data/Standings.ts';
+
+import { type ConferenceAbbrev } from '@/data/nhl';
 
 const wildcardTeams = await getWildcardTeams();
 
 const confs = {
 	E: 'East',
 	W: 'West',
-};
+} as const;
 ---
 
 <Layout>
@@ -27,7 +27,7 @@ const confs = {
 		return (
 
 			<h2 class="font-medium text-2xl mb-4">
-				{confs[confCode]}
+				{confs[confCode as ConferenceAbbrev]}
 			</h2>
 
 			<div>

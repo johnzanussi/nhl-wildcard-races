@@ -15,8 +15,8 @@ const {
         'rounded relative size-[55px] text-center flex items-center my-1',
         {
             'bg-green-500': game.result === 'win', // Win
-            'bg-red-800': game.result === 'loss' && game.lastPeriodType === 'REG', // Regulation Loss
-            'bg-yellow-600': game.result === 'loss' && game.lastPeriodType !== 'REG', // Regulation Loss
+            'bg-red-800': game.result === 'loss' && game.gameEnd === 'REG', // Regulation Loss
+            'bg-yellow-600': game.result === 'loss' && game.gameEnd !== 'REG', // OT/SO Loss
             'bg-zinc-400': !game.result,
         }
     ]}>

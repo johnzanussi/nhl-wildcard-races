@@ -1,9 +1,10 @@
 ---
-import { getTeamName, type TeamCode } from '@/data/Teams.ts';
+import { type TeamCode } from '@/data/nhl';
+import { getTeamName } from '@/data/Teams.ts';
 
 type Props = {
     teamCode: TeamCode;
-}
+};
 
 const teamName = getTeamName(Astro.props.teamCode);
 ---
