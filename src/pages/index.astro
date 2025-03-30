@@ -18,7 +18,7 @@ const confs = {
 
 <Layout>
 
-	<h1 class="text-3xl mb-6">
+	<h1 class="text-3xl">
 		NHL Wildcard Races
 	</h1>
 
@@ -26,14 +26,14 @@ const confs = {
 
 		return (
 
-			<h2 class="font-medium text-2xl mb-4">
+			<h2 class="font-medium text-2xl mt-8 mb-4">
 				{confs[confCode as ConferenceAbbrev]}
 			</h2>
 
 			<div>
 				{teams.map((team) => {
 					return (
-						<div class="rounded-lg bg-white p-6 shadow mb-4 w-[fit-content]">
+						<div class="rounded-lg bg-white dark:bg-zinc-900 border-1 dark:border-zinc-800 border-slate-100 p-6 shadow mb-4 w-[fit-content]">
 							<TeamHeader teamCode={team.teamCode} />
 							<TeamSchedule
 								teamCode={team.teamCode}
