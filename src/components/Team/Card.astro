@@ -1,5 +1,5 @@
 ---
-import TeamLogo from '@/components/TeamLogo.astro';
+import Logo from '@/components/Team/Logo.astro';
 import TeamName from '@/components/TeamName.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
 import Stats from '@/components/Team/Stats.astro';
@@ -39,7 +39,7 @@ const stats = [
     <div class="flex items-center space-x-2 justify-between">
 
         <div class="flex items-center">
-            <TeamLogo teamCode={team.teamCode} />
+            <Logo teamCode={team.teamCode} />
             <TeamName teamCode={team.teamCode} />
         </div>
 
