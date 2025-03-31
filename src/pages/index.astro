@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import TeamHeader from '@/components/TeamHeader.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
 import Link from '@/components/Link.astro';
+import DateFormat from '@/components/DateFormat.astro';
 
 import { getWildcardTeams } from '@/data/Standings.ts';
 
@@ -53,9 +54,14 @@ const confLabel = (code: keyof typeof confs) => confs[code];
 
 <Layout>
 
-	<h1 class="text-3xl">
-		NHL Wildcard Races
-	</h1>
+	<div class="flex justify-between items-end">
+		<h1 class="text-3xl">
+			NHL Wildcard Races
+		</h1>
+		<span class="text-xs text-end text-gray-600 dark:text-gray-400">
+			Last Updated <br /><DateFormat date={new Date()} formatStr="MMMM d, yyyy h:mma" />
+		</span>
+	</div>
 
 	<div role="tablist" class="tabs tabs-xl tabs-lift my-4 lg:my-8">
 

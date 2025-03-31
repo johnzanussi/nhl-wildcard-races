@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+export interface Props extends HTMLAttributes<'time'> {
+    date: string | Date;
+    formatStr?: string;
+}
+
+import {
+    isDate,
+    parseISO,
+    format,
+} from 'date-fns';
+
+const {
+    date,
+    formatStr = 'LLLL d, yyyy',
+    ...props
+} = Astro.props;
+
+const dateToFormat: Date = isDate(date) ? date as Date : parseISO(date as string);
+---
+
+<time datetime={format(dateToFormat, 'yyyy-MM-dd')} {...props}>
+    {format(dateToFormat, formatStr)}
+</time>
