@@ -8,6 +8,7 @@ type TeamStanding = {
     gamesRemaining: number;
     points: number;
     pointsBack: number;
+    regulationWins: number;
 };
 
 type Conference = {
@@ -55,6 +56,7 @@ export const getWildcardStandings = async () => {
                 gamesRemaining: REGULAR_SEASON_GAMES - team.gamesPlayed,
                 points: team.points,
                 pointsBack: team.wildcardSequence <= 2 ? 0 : wildcardPoints[conf] - team.points,
+                regulationWins: team.regulationWins,
             });
         }
 
