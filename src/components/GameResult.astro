@@ -6,7 +6,13 @@ const {
     game,
 } = Astro.props;
 ---
-<div class="text-center">
+<div class:list={[
+    'text-center',
+    {
+        'result-unplayed': !game.result,
+        'result-played': !!game.result,
+    }
+]}>
 
     <div class="text-xs font-medium h-4">
         {game.score ?? ``}
