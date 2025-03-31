@@ -1,0 +1,38 @@
+name: NHL Game Tracker
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Run every 5 minutes
+  workflow_dispatch:  # Allow manual triggering for testing
+
+jobs:
+  check-games:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run NHL game tracker
+        id: check-games
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: npx tsx scripts/track-games.ts
+
+      - name: Commit changes to game outcomes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add scripts/game-outcomes.json
+          git commit -m "Update game outcomes [skip ci]" || echo "No changes to commit"
+          git push
