@@ -7,7 +7,7 @@
     },
     "author": "John Zanussi",
     "license": "GPL-3.0-or-later",
-    "homepage": "https://nhl-wildcard-races.vercel.app/",
+    "homepage": "https://nhlwildcard.com",
     "scripts": {
         "dev": "astro dev",
         "build": "astro build",

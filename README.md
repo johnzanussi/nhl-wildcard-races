@@ -2,7 +2,7 @@
 
 ![NHL Wildcard Races Banner](public/screenshot.png)
 
-https://nhl-wildcard-races.vercel.app
+https://nhlwildcard.com
 
 A way to visualize the NHL wildcard race and playoff positioning.
 
