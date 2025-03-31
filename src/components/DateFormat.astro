@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 
 export interface Props extends HTMLAttributes<'time'> {
-    date: string | Date;
+    date?: string;
 }
 
 const {
@@ -10,18 +10,29 @@ const {
     ...props
 } = Astro.props;
 
+const dateIso = new Date().toISOString();
 ---
 
-<time datetime={date.toString()} {...props}>{date.toLocaleString()}</time>
+<time datetime={dateIso} {...props}>&nbsp;</time>
 
 <script>
-(() => {
-    document.querySelectorAll('time').forEach((el) => {
-        const timestamp = el.getAttribute('datetime');
-        if (timestamp) {
-            const date = new Date(timestamp);
-            el.innerHTML = date.toLocaleString();
-        }
-    });
-})();
+document.querySelectorAll('time').forEach((el) => {
+    const dateIso = el.getAttribute('datetime');
+    if (dateIso) {
+        const date = new Date(dateIso);
+        const formattedDate = date.toLocaleString(
+            navigator.language,
+            {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZoneName: 'short'
+            }
+        );
+        el.textContent = formattedDate;
+    }
+});
 </script>
