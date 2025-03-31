@@ -9,10 +9,4 @@ if (href?.toString().startsWith('http')) {
     props.rel = 'noopener noreferrer';
 }
 ---
-<a
-    href={href}
-    {...props}
-    class="text-blue-500"
->
-    <slot />
-</a>
+<a href={href} {...props} class="text-blue-500"><slot /></a>
