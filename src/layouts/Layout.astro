@@ -1,17 +1,33 @@
 ---
 import '@/styles/index.css';
+
+const title = 'NHL Wildcard Races';
+const description = 'Visualize the NHL wildcard race and playoff positioning.'
+const siteUrl = 'https://nhl-wildcard-races.vercel.app';
+const imageUrl = `${siteUrl}/screenshot.png`;
 ---
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description}>
 		<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
 		<link rel="manifest" href="/site.webmanifest">
 		<meta name="generator" content={Astro.generator} />
-		<title>NHL Wildcard Races</title>
+		<meta property="og:url" content={siteUrl}>
+		<meta property="og:type" content="website">
+		<meta property="og:title" content={title}>
+		<meta property="og:description" content={description}>
+		<meta property="og:image" content={imageUrl}>
+		<meta name="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content={siteUrl}>
+		<meta name="twitter:title" content={title}>
+		<meta name="twitter:description" content={description}>
+		<meta name="twitter:image" content={imageUrl}>
 	</head>
 	<body class="bg-slate-100 dark:bg-gray-950 dark:text-slate-100">
 		<main class="py-8 px-2 lg:p-8">
