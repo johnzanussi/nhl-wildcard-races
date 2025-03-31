@@ -1,0 +1,31 @@
+---
+// import { type TeamCode } from '@/data/nhl';
+
+import TeamLogo from '@/components/TeamLogo.astro';
+import TeamName from '@/components/TeamName.astro';
+import TeamSchedule from '@/components/TeamSchedule.astro';
+
+const { team } = Astro.props;
+// border-1 dark:border-zinc-800 border-slate-100 mb-4
+const cardClass = 'bg-white dark:bg-zinc-900 px-6';
+---
+
+<div class:list={[
+    'py-6 w-full sticky left-0',
+    cardClass
+]}>
+    <div class="flex items-center space-x-2">
+        <TeamLogo teamCode={team.teamCode} />
+        <TeamName teamCode={team.teamCode} />
+    </div>
+</div>
+
+<div class:list={[
+    'pb-6 w-[fit-content] mb-4',
+    cardClass
+]}>
+    <TeamSchedule
+        teamCode={team.teamCode}
+        points={team.points}
+    />
+</div>

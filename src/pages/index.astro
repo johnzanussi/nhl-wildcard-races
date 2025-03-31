@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import TeamHeader from '@/components/TeamHeader.astro';
-import TeamSchedule from '@/components/TeamSchedule.astro';
+import TeamCard from '@/components/Team/Card.astro';
 import Link from '@/components/Link.astro';
 import DateFormat from '@/components/DateFormat.astro';
 
@@ -55,7 +54,7 @@ const confLabel = (code: keyof typeof confs) => confs[code];
 <Layout>
 
 	<div class="flex justify-between items-end">
-		<h1 class="text-3xl">
+		<h1 class="text-2xl md:text-3xl">
 			NHL Wildcard Races
 		</h1>
 		<span class="text-xs text-end text-gray-600 dark:text-gray-400">
@@ -83,31 +82,19 @@ const confLabel = (code: keyof typeof confs) => confs[code];
 
 	</div>
 
-	<div class="w-full overflow-x-auto">
+	<div class="">
 
 		{Object.entries(wildcardTeams).map(([confCode, teams]) => {
 
 			return (
 
 				<div
-					class="tab-panel"
+					class="tab-panel w-full overflow-x-auto"
 					id={`tab-${confLabel(confCode as ConferenceAbbrev).toLowerCase()}`}>
 					{teams.map((team) => {
 						return (
 
-							<div class="w-[fit-content] rounded-lg bg-white dark:bg-zinc-900 border-1 dark:border-zinc-800 border-slate-100 p-6 shadow mb-4">
-
-								<TeamHeader
-									teamCode={team.teamCode}
-									points={team.points}
-								/>
-
-								<TeamSchedule
-									teamCode={team.teamCode}
-									points={team.points}
-								/>
-
-							</div>
+							<TeamCard team={team} />
 						);
 					})}
 				</div>
