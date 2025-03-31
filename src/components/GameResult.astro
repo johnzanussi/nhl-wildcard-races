@@ -1,5 +1,6 @@
 ---
-import TeamLogo from './TeamLogo.astro';
+import TeamLogo from '@/components/TeamLogo.astro';
+import { formatDate } from '@/lib/date';
 
 const {
     game,
@@ -11,21 +12,22 @@ const {
         {game.score ?? ``}
     </div>
 
-    <div class:list={[
-        'rounded relative size-[55px] text-center flex items-center my-1',
-        {
-            'bg-green-500': game.result === 'win', // Win
-            'bg-red-800': game.result === 'loss' && game.gameEnd === 'REG', // Regulation Loss
-            'bg-yellow-600': game.result === 'loss' && game.gameEnd !== 'REG', // OT/SO Loss
-            'bg-zinc-400': !game.result,
-        }
-    ]}>
-
+    <div
+        data-tip={formatDate(game.date)}
+        class:list={[
+            'tooltip rounded relative size-[55px] text-center flex items-center my-1',
+            {
+                'bg-green-500': game.result === 'win', // Win
+                'bg-red-800': game.result === 'loss' && game.gameEnd === 'REG', // Regulation Loss
+                'bg-yellow-600': game.result === 'loss' && game.gameEnd !== 'REG', // OT/SO Loss
+                'bg-zinc-400': !game.result,
+            }
+        ]}
+    >
         <div class="opacity-75 text-center w-full">
             <TeamLogo teamCode={game.opponent} />
         </div>
     </div>
-
 
     {!!game.totalPoints && (
         <div class="text-xs font-medium">

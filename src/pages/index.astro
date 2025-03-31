@@ -14,7 +14,42 @@ const confs = {
 	E: 'East',
 	W: 'West',
 } as const;
+
+const confLabel = (code: keyof typeof confs) => confs[code];
 ---
+
+<script>
+(() => {
+
+	const tabs = document.querySelectorAll('a[role="tab"]');
+
+	tabs.forEach(tab => {
+
+		tab.addEventListener('click', () => {
+
+			document
+				.querySelectorAll('a[role="tab"].tab-active')
+				.forEach(el => el.classList.remove('tab-active'));
+
+			tab.classList.add('tab-active');
+
+			document
+				.querySelectorAll('.tab-panel')
+				.forEach(el => el.classList.add('hidden'));
+
+			document
+				.querySelector(tab.dataset.tab)
+				.classList.remove('hidden');
+
+		});
+	});
+
+	const defaultHash = window.location.hash !== '' ? window.location.hash : '#east';
+	console.log('defaultHash', defaultHash, window.location.hash);
+	(document.querySelector(`a.tab[href="${defaultHash}"]`) as HTMLElement)?.click();
+
+})();
+</script>
 
 <Layout>
 
@@ -22,30 +57,59 @@ const confs = {
 		NHL Wildcard Races
 	</h1>
 
-	{Object.entries(wildcardTeams).map(([confCode, teams]) => {
+	<div role="tablist" class="tabs tabs-xl tabs-lift my-4 lg:my-8">
 
-		return (
+		{Object.keys(wildcardTeams).map((confCode) => {
 
-			<h2 class="font-medium text-2xl mt-8 mb-4">
-				{confs[confCode as ConferenceAbbrev]}
-			</h2>
+			const label = confLabel(confCode as ConferenceAbbrev);
 
-			<div>
-				{teams.map((team) => {
-					return (
-						<div class="rounded-lg bg-white dark:bg-zinc-900 border-1 dark:border-zinc-800 border-slate-100 p-6 shadow mb-4 w-[fit-content]">
-							<TeamHeader teamCode={team.teamCode} />
-							<TeamSchedule
-								teamCode={team.teamCode}
-								points={team.points}
-							/>
-						</div>
-					);
-				})}
-			</div>
-		);
+			return (
+				<a
+					role="tab"
+					class="tab grow"
+					href={`#${label.toLowerCase()}`}
+					data-tab={`#tab-${label.toLowerCase()}`}>
+					{label}
+				</a>
+			);
 
-	})}
+		})}
+
+	</div>
+
+	<div class="w-full overflow-x-auto">
+
+		{Object.entries(wildcardTeams).map(([confCode, teams]) => {
+
+			return (
+
+				<div
+					class="tab-panel"
+					id={`tab-${confLabel(confCode as ConferenceAbbrev).toLowerCase()}`}>
+					{teams.map((team) => {
+						return (
+
+							<div class="w-[fit-content] rounded-lg bg-white dark:bg-zinc-900 border-1 dark:border-zinc-800 border-slate-100 p-6 shadow mb-4">
+
+								<TeamHeader
+									teamCode={team.teamCode}
+									points={team.points}
+								/>
+
+								<TeamSchedule
+									teamCode={team.teamCode}
+									points={team.points}
+								/>
+
+							</div>
+						);
+					})}
+				</div>
+			);
+
+		})}
+
+	</div>
 
 	<div class="my-12 text-center">
 
