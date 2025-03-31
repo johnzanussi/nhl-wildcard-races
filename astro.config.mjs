@@ -8,4 +8,9 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()],
     },
+    image: {
+        domains: [
+            'assets.nhle.com',
+        ]
+    }
 });
