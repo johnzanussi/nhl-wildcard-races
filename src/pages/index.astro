@@ -1,55 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import TeamCard from '@/components/Team/Card.astro';
-import Link from '@/components/Link.astro';
 import DateFormat from '@/components/DateFormat.astro';
-
-import { getWildcardTeams } from '@/data/Standings.ts';
-
-import { type ConferenceAbbrev } from '@/data/nhl';
-
-const wildcardTeams = await getWildcardTeams();
-
-const confs = {
-	E: 'East',
-	W: 'West',
-} as const;
-
-const confLabel = (code: keyof typeof confs) => confs[code];
+import Standings from '@/components/Standings.astro';
+import Footer from '@/components/Footer.astro';
 ---
-
-<script>
-(() => {
-
-	const tabs = document.querySelectorAll('a[role="tab"]');
-
-	tabs.forEach(tab => {
-
-		tab.addEventListener('click', () => {
-
-			document
-				.querySelectorAll('a[role="tab"].tab-active')
-				.forEach(el => el.classList.remove('tab-active'));
-
-			tab.classList.add('tab-active');
-
-			document
-				.querySelectorAll('.tab-panel')
-				.forEach(el => el.classList.add('hidden'));
-
-			document
-				.querySelector(tab.dataset.tab)
-				.classList.remove('hidden');
-
-		});
-	});
-
-	const defaultHash = window.location.hash !== '' ? window.location.hash : '#east';
-	console.log('defaultHash', defaultHash, window.location.hash);
-	(document.querySelector(`a.tab[href="${defaultHash}"]`) as HTMLElement)?.click();
-
-})();
-</script>
 
 <Layout>
 
@@ -62,60 +16,8 @@ const confLabel = (code: keyof typeof confs) => confs[code];
 		</span>
 	</div>
 
-	<div role="tablist" class="tabs tabs-xl tabs-lift my-4 lg:my-8">
+	<Standings />
 
-		{Object.keys(wildcardTeams).map((confCode) => {
-
-			const label = confLabel(confCode as ConferenceAbbrev);
-
-			return (
-				<a
-					role="tab"
-					class="tab grow"
-					href={`#${label.toLowerCase()}`}
-					data-tab={`#tab-${label.toLowerCase()}`}>
-					{label}
-				</a>
-			);
-
-		})}
-
-	</div>
-
-	<div class="">
-
-		{Object.entries(wildcardTeams).map(([confCode, teams]) => {
-
-			return (
-
-				<div
-					class="tab-panel w-full overflow-x-auto"
-					id={`tab-${confLabel(confCode as ConferenceAbbrev).toLowerCase()}`}>
-					{teams.map((team) => {
-						return (
-
-							<TeamCard team={team} />
-						);
-					})}
-				</div>
-			);
-
-		})}
-
-	</div>
-
-	<div class="my-12 text-center">
-
-		<p class="mb-6">
-			Built by <Link href="https://johnzanussi.com/">John Zanussi</Link> with <Link href="https://astro.build/">Astro</Link> and <Link href="https://tailwindcss.com/">Tailwind</Link>.
-		</p>
-
-		<p class="mb-6">
-			Inspired by <Link href="https://www.reddit.com/r/hockey/comments/1jn7rlh/wildcard_races_mar_29/">u/Sarke1</Link>.
-		</p>
-
-		<p>View the code on <Link href="https://github.com/johnzanussi/nhl-wildcard-races">GitHub</Link>.</p>
-
-	</div>
+	<Footer />
 
 </Layout>

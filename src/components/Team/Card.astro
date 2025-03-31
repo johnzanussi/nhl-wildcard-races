@@ -1,23 +1,48 @@
 ---
-// import { type TeamCode } from '@/data/nhl';
-
 import TeamLogo from '@/components/TeamLogo.astro';
 import TeamName from '@/components/TeamName.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
+import Stats from '@/components/Team/Stats.astro';
 
 const { team } = Astro.props;
-// border-1 dark:border-zinc-800 border-slate-100 mb-4
-const cardClass = 'bg-white dark:bg-zinc-900 px-6';
+const cardClass = 'bg-white dark:bg-zinc-900 px-3 md:px-6';
+
+const stats = [
+    {
+        label: 'Total Points',
+        stat: team.points,
+    },
+    {
+        label: 'Points Back',
+        stat: team.pointsBack,
+    },
+    {
+        label: 'Games Remaining',
+        stat: team.gamesRemaining,
+    },
+    {
+        label: 'Potential Points',
+        stat: team.gamesRemaining * 2,
+    }
+];
 ---
 
 <div class:list={[
     'py-6 w-full sticky left-0',
     cardClass
 ]}>
-    <div class="flex items-center space-x-2">
-        <TeamLogo teamCode={team.teamCode} />
-        <TeamName teamCode={team.teamCode} />
+
+    <div class="flex items-center space-x-2 justify-between">
+
+        <div class="flex items-center">
+            <TeamLogo teamCode={team.teamCode} />
+            <TeamName teamCode={team.teamCode} />
+        </div>
+
+        <Stats data={stats} />
+
     </div>
+
 </div>
 
 <div class:list={[

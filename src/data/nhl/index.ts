@@ -1,6 +1,8 @@
 export * from './types';
 export * from './teams';
 
+export const REGULAR_SEASON_GAMES = 82;
+
 import { type NHLScheduleData, type NHLStandingsData } from '@/data/nhl/types';
 
 export const getTeamSchedule = async (teamCode: string, season = '20242025') => {

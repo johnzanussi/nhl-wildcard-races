@@ -1,0 +1,76 @@
+---
+import { getWildcardStandings } from '@/data/Standings.ts';
+import TeamCard from '@/components/Team/Card.astro';
+
+const wildcardStandings = await getWildcardStandings();
+---
+<div role="tablist" class="tabs tabs-xl tabs-lift my-4 lg:my-8">
+
+    {Object.entries(wildcardStandings).map(([, conf]) => {
+
+        const label = conf.label;
+
+        return (
+            <a
+                role="tab"
+                class="tab grow"
+                href={`#${label.toLowerCase()}`}
+                data-tab={`#tab-${label.toLowerCase()}`}>
+                {label}
+            </a>
+        );
+
+    })}
+
+</div>
+
+{Object.entries(wildcardStandings).map(([, conf]) => {
+
+    return (
+
+        <div
+            class="tab-panel w-full overflow-x-auto"
+            id={`tab-${conf.label.toLowerCase()}`}>
+            {conf.teams.map((team) => {
+                return (
+                    <TeamCard team={team} />
+                );
+            })}
+        </div>
+    );
+
+})}
+
+<script>
+(() => {
+
+    const tabs = document.querySelectorAll('a[role="tab"]');
+
+    tabs.forEach(tab => {
+
+        tab.addEventListener('click', () => {
+
+            document
+                .querySelectorAll('a[role="tab"].tab-active')
+                .forEach(el => el.classList.remove('tab-active'));
+
+            tab.classList.add('tab-active');
+
+            document
+                .querySelectorAll('.tab-panel')
+                .forEach(el => el.classList.add('hidden'));
+
+            if (tab instanceof HTMLElement && tab.dataset.tab) {
+                document
+                    .querySelector(tab.dataset.tab)
+                    ?.classList.remove('hidden');
+            }
+
+        });
+    });
+
+    const defaultHash = window.location.hash !== '' ? window.location.hash : '#east';
+    (document.querySelector(`a.tab[href="${defaultHash}"]`) as HTMLElement)?.click();
+
+})();
+</script>
