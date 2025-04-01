@@ -2,6 +2,7 @@ export * from './types';
 export * from './teams';
 
 export const REGULAR_SEASON_GAMES = 82;
+export const WILDCARD_SPOTS = 2;
 
 import { type NHLScheduleData, type NHLStandingsData } from '@/data/nhl/types';
 

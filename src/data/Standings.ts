@@ -1,9 +1,16 @@
 
-import { fetchStandings, type ConferenceAbbrev, type TeamCode, REGULAR_SEASON_GAMES } from '@/data/nhl';
+import {
+    type ConferenceAbbrev,
+    type TeamCode,
+    fetchStandings,
+    REGULAR_SEASON_GAMES,
+    WILDCARD_SPOTS
+} from '@/data/nhl';
 
-type TeamStanding = {
+export type TeamStanding = {
     teamCode: TeamCode;
     wildcardPlace: number;
+    isInWildcard: boolean;
     gamesPlayed: number;
     gamesRemaining: number;
     points: number;
@@ -52,6 +59,7 @@ export const getWildcardStandings = async () => {
             accum[conf].teams.push({
                 teamCode: team.teamAbbrev.default,
                 wildcardPlace: team.wildcardSequence,
+                isInWildcard: team.wildcardSequence <= WILDCARD_SPOTS,
                 gamesPlayed: team.gamesPlayed,
                 gamesRemaining: REGULAR_SEASON_GAMES - team.gamesPlayed,
                 points: team.points,

@@ -1,11 +1,18 @@
 ---
+import { type TeamStanding } from '@/data/Standings';
+
 import Logo from '@/components/Team/Logo.astro';
 import TeamName from '@/components/TeamName.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
 import Stats from '@/components/Team/Stats.astro';
 
+type Props = {
+    team: TeamStanding;
+}
+
 const { team } = Astro.props;
-const cardClass = 'bg-white dark:bg-zinc-900 px-3 md:px-6';
+const bgClass = team.isInWildcard ? 'bg-slate-200 dark:bg-gray-900' : 'bg-white dark:bg-zinc-900'
+const cardClass = `${bgClass} px-3 md:px-6`;
 
 const stats = [
     {
@@ -13,16 +20,17 @@ const stats = [
         stat: team.points,
     },
     {
+        // label: `Points ${team.isInWildcard ? 'Back' : 'Ahead'}`,
         label: 'Points Back',
         stat: team.pointsBack,
     },
     {
-        label: 'Regulation Wins',
-        stat: team.regulationWins,
-    },
-    {
         label: 'Games Remaining',
         stat: team.gamesRemaining,
+    },
+    {
+        label: 'Regulation Wins',
+        stat: team.regulationWins,
     },
     // {
     //     label: 'Potential Points',
