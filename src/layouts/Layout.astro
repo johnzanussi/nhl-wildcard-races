@@ -1,4 +1,6 @@
 ---
+import Analytics from '@vercel/analytics/astro';
+
 import '@/styles/index.css';
 
 const title = 'NHL Wildcard Races';
@@ -35,5 +37,6 @@ const imageUrl = `${siteUrl}/screenshot.png`;
 		<main class="py-8 px-2 lg:p-8">
 			<slot />
 		</main>
+		<Analytics />
 	</body>
 </html>
