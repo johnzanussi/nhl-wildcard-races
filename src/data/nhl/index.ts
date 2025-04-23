@@ -18,9 +18,9 @@ export const getTeamSchedule = async (teamCode: string, season = '20242025') => 
 
 };
 
-export const fetchStandings = async () => {
-    const date = new Date().toISOString().split('T')[0];
-    const response = await fetch(`https://api-web.nhle.com/v1/standings/${date}`);
+export const fetchStandings = async (date: string) => {
+    const defaultDate = new Date().toISOString().split('T')[0];
+    const response = await fetch(`https://api-web.nhle.com/v1/standings/${date || defaultDate}`);
 
     if (!response.ok) {
         throw new Error('Failed to fetch standings');

@@ -5,7 +5,9 @@ export const getLastGames = async (teamCode: TeamCode, numGames = 20): Promise<G
 
     const schedule = await getTeamSchedule(teamCode);
 
-    const lastGames = schedule.games.slice(-numGames).map((apiGame) => {
+    const regSeasonGames = schedule.games.filter(game => game.gameType !== 3)
+
+    const lastGames = regSeasonGames.slice(-numGames).map((apiGame) => {
 
         const isHome = apiGame.homeTeam.abbrev === teamCode;
 

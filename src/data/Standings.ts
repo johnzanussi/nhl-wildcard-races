@@ -16,6 +16,7 @@ export type TeamStanding = {
     points: number;
     pointsBack: number;
     regulationWins: number;
+    isEliminated: boolean;
 };
 
 type Conference = {
@@ -27,7 +28,8 @@ type Conferences = Record<ConferenceAbbrev, Conference>;
 
 export const getWildcardStandings = async () => {
 
-    const standings = await fetchStandings();
+    // @todo: this is the last day of the season
+    const standings = await fetchStandings('2025-04-17');
 
     const conferences: Conferences = {
         E: {
@@ -48,7 +50,7 @@ export const getWildcardStandings = async () => {
     // Extract the wild card teams from the standings data
     const wildcardTeams = standings.standings.reduce((accum, team) => {
 
-        if (team.wildcardSequence !== 0 && team.clinchIndicator !== 'e') {
+        if (team.wildcardSequence !== 0) {
 
             const conf = team.conferenceAbbrev;
 
@@ -65,6 +67,7 @@ export const getWildcardStandings = async () => {
                 points: team.points,
                 pointsBack: team.wildcardSequence <= 2 ? 0 : wildcardPoints[conf] - team.points,
                 regulationWins: team.regulationWins,
+                isEliminated: team.clinchIndicator === 'e',
             });
         }
 

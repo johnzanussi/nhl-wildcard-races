@@ -11,8 +11,9 @@ type Props = {
 }
 
 const { team } = Astro.props;
+
 const bgClass = team.isInWildcard ? 'bg-slate-200 dark:bg-gray-900' : 'bg-white dark:bg-zinc-900'
-const cardClass = `${bgClass} px-3 md:px-6`;
+const cardClass = `${bgClass} px-3 md:px-6 ${team.isEliminated ? 'opacity-50' : ''}`;
 
 const stats = [
     {
