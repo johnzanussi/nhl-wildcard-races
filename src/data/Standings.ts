@@ -29,7 +29,7 @@ type Conferences = Record<ConferenceAbbrev, Conference>;
 export const getWildcardStandings = async () => {
 
     // @todo: this is the last day of the season
-    const standings = await fetchStandings('2025-04-17');
+    const standings = await fetchStandings();
 
     const conferences: Conferences = {
         E: {

@@ -6,7 +6,7 @@ export const WILDCARD_SPOTS = 2;
 
 import { type NHLScheduleData, type NHLStandingsData } from '@/data/nhl/types';
 
-export const getTeamSchedule = async (teamCode: string, season = '20242025') => {
+export const getTeamSchedule = async (teamCode: string, season = '20252026') => {
 
     const response = await fetch(`https://api-web.nhle.com/v1/club-schedule-season/${teamCode}/${season}`);
 
@@ -18,9 +18,8 @@ export const getTeamSchedule = async (teamCode: string, season = '20242025') => 
 
 };
 
-export const fetchStandings = async (date: string) => {
-    const defaultDate = new Date().toISOString().split('T')[0];
-    const response = await fetch(`https://api-web.nhle.com/v1/standings/${date || defaultDate}`);
+export const fetchStandings = async (date: string = new Date().toISOString().split('T')[0] || '') => {
+    const response = await fetch(`https://api-web.nhle.com/v1/standings/${date}`);
 
     if (!response.ok) {
         throw new Error('Failed to fetch standings');

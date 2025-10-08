@@ -14,7 +14,7 @@ const {
     points,
 } = Astro.props;
 
-const results = await getLastGames(teamCode, 25);
+const results = await getLastGames(teamCode, 82);
 
 const pointsFromGames = results.reduce((accum, game) => {
     return accum + (game.isComplete ? game.points : 0);
