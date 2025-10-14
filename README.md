@@ -1,10 +1,10 @@
 # NHL Wildcard Races
 
-![NHL Wildcard Races Banner](public/screenshot.png)
+![NHL Wild Card Races Banner](public/screenshot.png)
 
 https://nhlwildcard.com
 
-A way to visualize the NHL wildcard race and playoff positioning.
+A way to visualize the NHL wild card race and playoff positioning.
 
 Inspired by [u/Sarke1](https://www.reddit.com/r/hockey/comments/1jn7rlh/wildcard_races_mar_29/).
 

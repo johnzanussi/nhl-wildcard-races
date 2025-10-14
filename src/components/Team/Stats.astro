@@ -13,14 +13,14 @@ const {
 } = Astro.props;
 ---
 
-<div class="flex gap-1 sm:gap-4">
+<div class="flex gap-1 sm:gap-4 mt-1">
     {data.map(({ label, stat }) => {
         return (
             <div class="text-center max-w-10 sm:max-w-15">
-                <div class="text-xs sm:text-base dark:text-slate-200">
+                <div class="text-xs sm:text-lg font-medium">
                     {stat}
                 </div>
-                <div class="text-[8px]/[10px] sm:text-xs dark:text-slate-500">
+                <div class="text-[8px]/[10px] sm:text-xs">
                     {label}
                 </div>
             </div>

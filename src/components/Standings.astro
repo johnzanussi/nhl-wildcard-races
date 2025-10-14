@@ -1,39 +1,84 @@
 ---
-import { getWildcardStandings } from '@/data/Standings.ts';
+import { getWildCardStandings } from '@/data/Standings.ts';
 import TeamCard from '@/components/Team/Card.astro';
+import Divider from '@/components/Divider.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
 
-const wildcardStandings = await getWildcardStandings();
+
+const standings = await getWildCardStandings();
 ---
-<div role="tablist" class="tabs tabs-xl tabs-lift my-4 lg:my-8">
 
-    {Object.entries(wildcardStandings).map(([, conf]) => {
+<div class="flex my-4 lg:my-8 items-center justify-between">
 
-        const label = conf.label;
+    <div
+        class="tabs tabs-lg tabs-box md:w-1/2"
+        role="tablist"
+    >
 
-        return (
-            <a
-                role="tab"
-                class="tab grow"
-                href={`#${label.toLowerCase()}`}
-                data-tab={`#tab-${label.toLowerCase()}`}>
-                {label}
-            </a>
-        );
+        {Object.entries(standings).map(([, conf]) => {
 
-    })}
+            const label = conf.label;
+
+            return (
+                <a
+                    role="tab"
+                    class="tab grow"
+                    href={`#${label.toLowerCase()}`}
+                    data-tab={`#tab-${label.toLowerCase()}`}>
+                    {label}
+                </a>
+            );
+
+        })}
+
+    </div>
+
+    <div>
+        <label class="label text-sm">
+            <input
+                name="toggle-playoff-teams"
+                type="checkbox"
+                class="toggle toggle-sm"
+            />
+            Show Playoff Teams
+        </label>
+    </div>
+
+    <ThemeToggle />
+
 
 </div>
 
-{Object.entries(wildcardStandings).map(([, conf]) => {
+{Object.entries(standings).map(([, conf]) => {
+
+    let teamCount = 0;
 
     return (
 
         <div
             class="tab-panel w-full overflow-x-auto"
-            id={`tab-${conf.label.toLowerCase()}`}>
+            id={`tab-${conf.label.toLowerCase()}`}
+        >
             {conf.teams.map((team) => {
+                teamCount++;
+
                 return (
-                    <TeamCard team={team} />
+                    <>
+                        <TeamCard team={team} />
+
+                        {teamCount === 6 && (
+                            <Divider class="divider-accent playoff-team hidden">
+                                Wild Card
+                            </Divider>
+                        )}
+
+                        {teamCount === 8 && (
+                            <Divider class="divider-error">
+                                No Playoffs
+                            </Divider>
+                        )}
+
+                    </>
                 );
             })}
         </div>
@@ -42,6 +87,13 @@ const wildcardStandings = await getWildcardStandings();
 })}
 
 <script>
+const playoffTeamElements = document.querySelectorAll('.playoff-team');
+
+document.querySelector('input[name="toggle-playoff-teams"]')?.addEventListener('change', (e: Event) => {
+    const target = e.currentTarget as HTMLInputElement;
+    playoffTeamElements.forEach(el => el.classList.toggle('hidden', !target?.checked));
+});
+
 const scrollToLastGame = () => {
 
     const panel = document.querySelector('.tab-panel:not(.hidden)');

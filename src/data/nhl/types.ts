@@ -136,7 +136,23 @@ export interface NHLStandingsData {
   standings: TeamStanding[];
 }
 
-export type ConferenceAbbrev = 'E' | 'W';
+export const Conferences = {
+  'E': 'Eastern',
+  'W': 'Western',
+} as const;
+
+export const Divisions = {
+  'A': 'Atlantic',
+  'M': 'Metropolitan',
+  'C': 'Central',
+  'P': 'Pacific',
+} as const;
+
+export type ConferenceName = (typeof Conferences)[keyof typeof Conferences];
+export type ConferenceAbbrev = keyof typeof Conferences;
+
+export type DivisionName = (typeof Divisions)[keyof typeof Divisions];
+export type DivisionAbbrev = keyof typeof Divisions;
 
 export interface TeamStanding {
   // Team identification (partial overlap with TeamIdentifier)
@@ -151,9 +167,9 @@ export interface TeamStanding {
   // Division and conference info
   clinchIndicator?: string; // e.g., "x" for clinched playoff spot, "e" for eliminated
   conferenceAbbrev: ConferenceAbbrev;
-  conferenceName: string;
-  divisionAbbrev: string;
-  divisionName: string;
+  conferenceName: ConferenceName;
+  divisionAbbrev: DivisionAbbrev;
+  divisionName: DivisionName;
 
   // Ranking sequences
   conferenceHomeSequence: number;

@@ -1,0 +1,15 @@
+---
+type Props = {
+    class: string;
+};
+
+const {
+    class: className,
+} = Astro.props;
+---
+<div class:list={[
+    'sticky left-0 divider font-medium',
+    className,
+]}>
+    <slot />
+</div>

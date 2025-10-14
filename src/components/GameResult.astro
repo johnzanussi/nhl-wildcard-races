@@ -21,7 +21,7 @@ const {
     <div
         data-tip={formatDate(game.date)}
         class:list={[
-            'tooltip rounded relative size-[55px] text-center flex items-center my-1',
+            'tooltip tooltip-bottom rounded relative size-[55px] text-center flex items-center my-1 z-1',
             {
                 'bg-green-500': game.result === 'win', // Win
                 'bg-red-800': game.result === 'loss' && game.gameEnd === 'REG', // Regulation Loss
