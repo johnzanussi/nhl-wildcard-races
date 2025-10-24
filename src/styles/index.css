@@ -4,3 +4,20 @@
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* Playoff teams visibility */
+.playoff-team {
+    display: none;
+}
+html[data-show-playoffs='true'] .playoff-team {
+    display: block;
+}
+
+/* Tab panel visibility */
+.tab-panel {
+    display: none;
+}
+html[data-active-tab='east'] .tab-panel[data-tab='east'],
+html[data-active-tab='west'] .tab-panel[data-tab='west'] {
+    display: block;
+}

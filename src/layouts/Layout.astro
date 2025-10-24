@@ -4,45 +4,136 @@ import Analytics from '@vercel/analytics/astro';
 import '@/styles/index.css';
 
 const title = 'NHL Wild Card Races';
-const description = 'Visualize the NHL wild card race and playoff positioning.'
+const description = 'Visualize the NHL wild card race and playoff positioning.';
 const siteUrl = 'https://nhlwildcard.com';
 const imageUrl = `${siteUrl}/screenshot.png`;
+const keywords = 'NHL, wild card, playoff race, hockey, standings, NHL playoffs, Eastern Conference, Western Conference';
+const author = 'John Zanussi';
+
+// Structured Data for SEO
+const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': title,
+    'description': description,
+    'url': siteUrl,
+    'author': {
+        '@type': 'Person',
+        'name': author
+    },
+    'about': {
+        '@type': 'SportsOrganization',
+        'name': 'National Hockey League',
+        'sport': 'Ice Hockey'
+    }
+};
 ---
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+		<!-- Primary Meta Tags -->
 		<title>{title}</title>
-		<meta name="description" content={description}>
-		<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
-		<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-		<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#030712">
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={author} />
+		<meta name="copyright" content={author} />
+		<link rel="canonical" href={siteUrl} />
+
+		<!-- Favicon and Icons -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+
+		<!-- Theme Colors -->
+		<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+		<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#030712" />
+
+		<!-- iOS PWA Support -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="apple-mobile-web-app-title" content="NHL WC Races" />
+
+		<!-- Generator -->
 		<meta name="generator" content={Astro.generator} />
-		<meta property="og:url" content={siteUrl}>
-		<meta property="og:type" content="website">
-		<meta property="og:title" content={title}>
-		<meta property="og:description" content={description}>
-		<meta property="og:image" content={imageUrl}>
-		<meta name="twitter:card" content="summary_large_image">
-		<meta property="twitter:url" content={siteUrl}>
-		<meta name="twitter:title" content={title}>
-		<meta name="twitter:description" content={description}>
-		<meta name="twitter:image" content={imageUrl}>
-		<script is:inline>
-			if (localStorage.getItem('theme') === null) {
-				document.documentElement.setAttribute('data-theme', 'light');
-			} else {
-				document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'));
-			}
-		</script>
-		<script>
-			import { themeChange } from 'theme-change';
-			themeChange();
-		  </script>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={imageUrl} />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={siteUrl} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageUrl} />
+
+		<!-- Structured Data -->
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+	<!-- Critical inline CSS - only what's needed to prevent FOUC -->
+	<style is:inline>
+		body {
+			opacity: 0;
+		}
+	</style>
+
+	<!-- Critical inline script - state restoration before render -->
+	<script is:inline>
+		// Restore theme
+		const savedTheme = localStorage.getItem('theme');
+		document.documentElement.setAttribute('data-theme', savedTheme === 'sunset' ? 'sunset' : 'nord');
+
+		// Restore playoff teams visibility
+		const showPlayoffs = localStorage.getItem('show-playoff-teams') === 'true';
+		if (showPlayoffs) {
+			document.documentElement.setAttribute('data-show-playoffs', 'true');
+		}
+
+		// Restore active tab selection
+		const savedTab = localStorage.getItem('active-tab') || 'east';
+		document.documentElement.setAttribute('data-active-tab', savedTab);
+
+		// Reveal the UI now that state is restored
+		document.addEventListener('DOMContentLoaded', () => {
+			document.body.style.opacity = '1';
+		});
+	</script>
+
+	<script>
+		import { themeChange } from 'theme-change';
+		themeChange();
+	</script>
+
+	<script>
+		// Service Worker Registration
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('/sw.js').then(
+					(registration) => {
+						console.log('Service Worker registered:', registration);
+					},
+					(error) => {
+						console.log('Service Worker registration failed:', error);
+					}
+				);
+			});
+		}
+
+		// Install prompt handling
+		let deferredPrompt;
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault();
+			deferredPrompt = e;
+		});
+	</script>
 	</head>
 	<body>
 		<main class="container mx-auto py-8 px-2 lg:p-8">

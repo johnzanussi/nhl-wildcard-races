@@ -44,8 +44,8 @@ const standings = await getWildCardStandings();
         </label>
     </div>
 
-    <ThemeToggle />
 
+    <ThemeToggle />
 
 </div>
 
@@ -58,6 +58,7 @@ const standings = await getWildCardStandings();
         <div
             class="tab-panel w-full overflow-x-auto"
             id={`tab-${conf.label.toLowerCase()}`}
+            data-tab={conf.label.toLowerCase()}
         >
             {conf.teams.map((team) => {
                 teamCount++;
@@ -67,7 +68,7 @@ const standings = await getWildCardStandings();
                         <TeamCard team={team} />
 
                         {teamCount === 6 && (
-                            <Divider class="divider-accent playoff-team hidden">
+                            <Divider class="divider-accent playoff-team">
                                 Wild Card
                             </Divider>
                         )}
@@ -87,28 +88,41 @@ const standings = await getWildCardStandings();
 })}
 
 <script>
-const playoffTeamElements = document.querySelectorAll('.playoff-team');
+const playoffToggle = document.querySelector('input[name="toggle-playoff-teams"]') as HTMLInputElement;
+const PLAYOFF_TOGGLE_KEY = 'show-playoff-teams';
 
-document.querySelector('input[name="toggle-playoff-teams"]')?.addEventListener('change', (e: Event) => {
+// Sync playoff toggle with data attribute
+if (playoffToggle) {
+    playoffToggle.checked = document.documentElement.getAttribute('data-show-playoffs') === 'true';
+}
+
+// Update on change
+playoffToggle?.addEventListener('change', (e: Event) => {
     const target = e.currentTarget as HTMLInputElement;
-    playoffTeamElements.forEach(el => el.classList.toggle('hidden', !target?.checked));
+    const isChecked = target.checked;
+
+    localStorage.setItem(PLAYOFF_TOGGLE_KEY, isChecked.toString());
+
+    if (isChecked) {
+        document.documentElement.setAttribute('data-show-playoffs', 'true');
+    } else {
+        document.documentElement.removeAttribute('data-show-playoffs');
+    }
 });
 
 const scrollToLastGame = () => {
-
-    const panel = document.querySelector('.tab-panel:not(.hidden)');
+    const activeTab = document.documentElement.getAttribute('data-active-tab') || 'east';
+    const panel = document.querySelector(`.tab-panel[data-tab="${activeTab}"]`);
 
     if (panel) {
         const schedules = panel.querySelectorAll('.schedule');
         const firstSchedule = schedules[0];
 
         if (firstSchedule) {
-
             const results = firstSchedule.querySelectorAll('.result-played');
             const lastGame = results[results.length - 1];
 
             if (lastGame) {
-
                 const leftPos = lastGame.getBoundingClientRect().left + panel.scrollLeft;
                 const scrollPos = leftPos - (document.documentElement.clientWidth / 2);
 
@@ -117,41 +131,37 @@ const scrollToLastGame = () => {
                 });
             }
         }
-
     }
-    };
+};
 
 (() => {
-
     const tabs = document.querySelectorAll('a[role="tab"]');
 
     tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        tab.addEventListener('click', () => {
+            const tabName = tab.getAttribute('href')?.substring(1) || 'east';
 
-            document
-                .querySelectorAll('a[role="tab"].tab-active')
+            // Update active states
+            document.querySelectorAll('a[role="tab"].tab-active')
                 .forEach(el => el.classList.remove('tab-active'));
-
             tab.classList.add('tab-active');
 
-            document
-                .querySelectorAll('.tab-panel')
-                .forEach(el => el.classList.add('hidden'));
+            // Update data attribute to show correct tab
+            document.documentElement.setAttribute('data-active-tab', tabName);
 
-            if (tab instanceof HTMLElement && tab.dataset.tab) {
-                document
-                    .querySelector(tab.dataset.tab)
-                    ?.classList.remove('hidden');
-                scrollToLastGame();
-            }
+            // Save to localStorage
+            localStorage.setItem('active-tab', tabName);
 
+            // Scroll to last game
+            scrollToLastGame();
         });
     });
 
-    const defaultHash = window.location.hash !== '' ? window.location.hash : '#east';
-    (document.querySelector(`a.tab[href="${defaultHash}"]`) as HTMLElement)?.click();
-
+    // Initialize from data attribute (already set in head)
+    const activeTab = document.documentElement.getAttribute('data-active-tab') || 'east';
+    (document.querySelector(`a.tab[href="#${activeTab}"]`) as HTMLElement)?.click();
 })();
 
 scrollToLastGame();
