@@ -1,0 +1,14 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Standings from '@/components/Standings.astro';
+import type { ConferenceKey } from '@/data/Standings';
+---
+
+<Layout>
+
+	<Standings
+        conference={Astro.params.conference as ConferenceKey}
+        isPlayoffs={Astro.url.pathname.includes('playoffs')}
+    />
+
+</Layout>

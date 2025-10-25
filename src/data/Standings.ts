@@ -33,7 +33,43 @@ type Conference = {
 
 type Conferences = Record<ConferenceAbbrev, Conference>;
 
-export const getWildCardStandings = async () => {
+let STANDINGS_CACHE: Conferences;
+
+export type ConferenceKey = 'east' | 'west';
+
+const confMap: Record<ConferenceKey, ConferenceAbbrev> = {
+    'east': 'E',
+    'west': 'W',
+} as const;
+
+export const getConferences = () => {
+    return [
+        {
+            abbrev: 'E',
+            name: 'Eastern',
+            label: 'East',
+            key: 'east',
+        },
+        {
+            abbrev: 'W',
+            name: 'Western',
+            label: 'West',
+            key: 'west',
+        },
+    ];
+};
+
+export const getConfStandings = async (conference: ConferenceKey, isPlayoffs: boolean) => {
+    if (!STANDINGS_CACHE) {
+        STANDINGS_CACHE = await getStandings();
+    }
+
+    const confAbbrev = confMap[conference];
+
+    return STANDINGS_CACHE[confAbbrev].teams.filter(team => (!team.isInPlayoffs || (isPlayoffs && team.isInPlayoffs)));
+}
+
+export const getStandings = async () => {
     const standings = await fetchStandings();
 
     // Pre-initialize division buckets to avoid conditional checks

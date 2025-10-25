@@ -1,5 +1,9 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import DateFormat from '@/components/DateFormat.astro';
+import Footer from '@/components/Footer.astro';
+
+import Logo from '@/assets/logo.svg';
 
 import '@/styles/index.css';
 
@@ -72,13 +76,6 @@ const structuredData = {
 
 	<!-- Structured Data -->
 	<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-
-	<style is:inline>
-		body {
-			opacity: 0;
-		}
-	</style>
-
 	<script is:inline>
 		// Restore theme (keep localStorage for theme only)
 		const savedTheme = localStorage.getItem('theme');
@@ -90,9 +87,31 @@ const structuredData = {
 	</script>
 </head>
 <body>
-	<main class="container mx-auto py-8 px-2 lg:p-8">
-		<slot />
-	</main>
-	<Analytics />
+<main class="container mx-auto py-8 px-2 lg:p-8">
+
+	<div class="flex justify-between items-end">
+
+		<div class="flex items-center gap-2">
+
+			<Logo class="w-12 text-base" />
+
+			<h1 class="text-2xl md:text-3xl font-medium">
+				NHL Wild Card Races
+			</h1>
+
+		</div>
+
+		<span class="text-xs text-end">
+			Last updated <br /><DateFormat />
+		</span>
+
+	</div>
+
+	<slot />
+
+	<Footer />
+
+</main>
+<Analytics />
 </body>
 </html>

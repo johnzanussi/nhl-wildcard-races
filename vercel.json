@@ -1,9 +1,10 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "rewrites": [
+    "redirects": [
         {
-            "source": "/(east|west)(/playoffs)?",
-            "destination": "/"
+            "source": "/",
+            "destination": "/east",
+            "permanent": true
         }
     ]
 }

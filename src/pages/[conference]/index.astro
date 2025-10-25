@@ -1,4 +1,6 @@
 ---
+import PageStandings from '@/components/PageStandings.astro';
+
 export function getStaticPaths() {
     const conferences = ['east', 'west'];
     return conferences.map(conference => ({
@@ -7,6 +9,6 @@ export function getStaticPaths() {
         },
     }));
 }
-
-return Astro.rewrite('/');
 ---
+
+<PageStandings />

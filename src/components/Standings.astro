@@ -1,10 +1,22 @@
 ---
-import { getWildCardStandings } from '@/data/Standings.ts';
+import { getConfStandings, getConferences, type ConferenceKey } from '@/data/Standings.ts';
 import TeamCard from '@/components/Team/Card.astro';
 import Divider from '@/components/Divider.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 
-const standings = await getWildCardStandings();
+type Props = {
+    conference?: ConferenceKey;
+    isPlayoffs?: boolean;
+};
+
+const {
+    conference = 'east',
+    isPlayoffs = false,
+} = Astro.props;
+
+const confStandings = await getConfStandings(conference, isPlayoffs);
+
+let teamCount = 0;
 ---
 <div class="flex my-4 lg:my-8 items-center justify-between">
 
@@ -13,17 +25,15 @@ const standings = await getWildCardStandings();
         role="tablist"
     >
 
-        {Object.entries(standings).map(([, conf]) => {
-
-            const label = conf.label;
-            const confLower = label.toLowerCase();
-
+        {getConferences().map(({ label, key }) => {
             return (
                 <a
                     role="tab"
-                    class="tab grow tab-conference"
-                    data-conference={confLower}
-                    href={`/${confLower}`}>
+                    class:list={['tab grow', {
+                        'tab-active': key === conference,
+                    }]}
+                    href={`/${key}${isPlayoffs ? '/playoffs' : ''}`}
+                >
                     {label}
                 </a>
             );
@@ -35,52 +45,48 @@ const standings = await getWildCardStandings();
     <div>
         <label class="label text-sm">
             <input
-                name="toggle-playoff-teams"
                 type="checkbox"
                 class="toggle toggle-sm"
+                checked={isPlayoffs}
+                data-href={`/${conference}${isPlayoffs ? '' : '/playoffs'}`}
             />
             Show Playoff Teams
         </label>
+        <script>
+            document.querySelector('input[data-href]')?.addEventListener('change', (e) => {
+                location.href = (e.currentTarget as HTMLInputElement).getAttribute('data-href') || '';
+            });
+        </script>
     </div>
-
 
     <ThemeToggle />
 
 </div>
 
-{Object.entries(standings).map(([, conf]) => {
+<div class="tab-panel w-full overflow-x-auto">
+    {confStandings.map((team) => {
+        teamCount++;
 
-    let teamCount = 0;
+        const showWildCardDivider = isPlayoffs && teamCount === 6;
+        const showNoPlayoffsDivider = isPlayoffs && teamCount === 8 || !isPlayoffs && teamCount === 2;
 
-    return (
+        return (
+            <>
+                <TeamCard team={team} />
 
-        <div
-            class="tab-panel w-full overflow-x-auto"
-            data-tab={conf.label.toLowerCase()}
-        >
-            {conf.teams.map((team) => {
-                teamCount++;
+                {showWildCardDivider && (
+                    <Divider class="divider-accent">
+                        Wild Card
+                    </Divider>
+                )}
 
-                return (
-                    <>
-                        <TeamCard team={team} />
+                {showNoPlayoffsDivider && (
+                    <Divider class="divider-error">
+                        No Playoffs
+                    </Divider>
+                )}
 
-                        {teamCount === 6 && (
-                            <Divider class="divider-accent playoff-team">
-                                Wild Card
-                            </Divider>
-                        )}
-
-                        {teamCount === 8 && (
-                            <Divider class="divider-error">
-                                No Playoffs
-                            </Divider>
-                        )}
-
-                    </>
-                );
-            })}
-        </div>
-    );
-
-})}
+            </>
+        );
+    })}
+</div>
