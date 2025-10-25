@@ -1,0 +1,12 @@
+---
+export function getStaticPaths() {
+    const conferences = ['east', 'west'];
+    return conferences.map(conference => ({
+        params: {
+            conference
+        },
+    }));
+}
+
+return Astro.rewrite('/');
+---

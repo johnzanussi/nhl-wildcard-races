@@ -4,10 +4,8 @@ import TeamCard from '@/components/Team/Card.astro';
 import Divider from '@/components/Divider.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 
-
 const standings = await getWildCardStandings();
 ---
-
 <div class="flex my-4 lg:my-8 items-center justify-between">
 
     <div
@@ -18,13 +16,14 @@ const standings = await getWildCardStandings();
         {Object.entries(standings).map(([, conf]) => {
 
             const label = conf.label;
+            const confLower = label.toLowerCase();
 
             return (
                 <a
                     role="tab"
-                    class="tab grow"
-                    href={`#${label.toLowerCase()}`}
-                    data-tab={`#tab-${label.toLowerCase()}`}>
+                    class="tab grow tab-conference"
+                    data-conference={confLower}
+                    href={`/${confLower}`}>
                     {label}
                 </a>
             );
@@ -57,7 +56,6 @@ const standings = await getWildCardStandings();
 
         <div
             class="tab-panel w-full overflow-x-auto"
-            id={`tab-${conf.label.toLowerCase()}`}
             data-tab={conf.label.toLowerCase()}
         >
             {conf.teams.map((team) => {
@@ -86,83 +84,3 @@ const standings = await getWildCardStandings();
     );
 
 })}
-
-<script>
-const playoffToggle = document.querySelector('input[name="toggle-playoff-teams"]') as HTMLInputElement;
-const PLAYOFF_TOGGLE_KEY = 'show-playoff-teams';
-
-// Sync playoff toggle with data attribute
-if (playoffToggle) {
-    playoffToggle.checked = document.documentElement.getAttribute('data-show-playoffs') === 'true';
-}
-
-// Update on change
-playoffToggle?.addEventListener('change', (e: Event) => {
-    const target = e.currentTarget as HTMLInputElement;
-    const isChecked = target.checked;
-
-    localStorage.setItem(PLAYOFF_TOGGLE_KEY, isChecked.toString());
-
-    if (isChecked) {
-        document.documentElement.setAttribute('data-show-playoffs', 'true');
-    } else {
-        document.documentElement.removeAttribute('data-show-playoffs');
-    }
-});
-
-const scrollToLastGame = () => {
-    const activeTab = document.documentElement.getAttribute('data-active-tab') || 'east';
-    const panel = document.querySelector(`.tab-panel[data-tab="${activeTab}"]`);
-
-    if (panel) {
-        const schedules = panel.querySelectorAll('.schedule');
-        const firstSchedule = schedules[0];
-
-        if (firstSchedule) {
-            const results = firstSchedule.querySelectorAll('.result-played');
-            const lastGame = results[results.length - 1];
-
-            if (lastGame) {
-                const leftPos = lastGame.getBoundingClientRect().left + panel.scrollLeft;
-                const scrollPos = leftPos - (document.documentElement.clientWidth / 2);
-
-                panel.scroll({
-                    left: scrollPos,
-                });
-            }
-        }
-    }
-};
-
-(() => {
-    const tabs = document.querySelectorAll('a[role="tab"]');
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            const tabName = tab.getAttribute('href')?.substring(1) || 'east';
-
-            // Update active states
-            document.querySelectorAll('a[role="tab"].tab-active')
-                .forEach(el => el.classList.remove('tab-active'));
-            tab.classList.add('tab-active');
-
-            // Update data attribute to show correct tab
-            document.documentElement.setAttribute('data-active-tab', tabName);
-
-            // Save to localStorage
-            localStorage.setItem('active-tab', tabName);
-
-            // Scroll to last game
-            scrollToLastGame();
-        });
-    });
-
-    // Initialize from data attribute (already set in head)
-    const activeTab = document.documentElement.getAttribute('data-active-tab') || 'east';
-    (document.querySelector(`a.tab[href="#${activeTab}"]`) as HTMLElement)?.click();
-})();
-
-scrollToLastGame();
-</script>
