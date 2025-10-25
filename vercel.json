@@ -1,11 +1,21 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
+    "trailingSlash": false,
     "redirects": [
         {
             "source": "/",
             "destination": "/east",
             "permanent": true
         }
+    ],
+    "rewrites": [
+        {
+            "source": "/seCs15RsxqlA.js",
+            "destination": "https://plausible.io/js/script.outbound-links.js"
+        },
+        {
+            "source": "/api/seCs15RsxqlA",
+            "destination": "https://plausible.io/api/event"
+        }
     ]
 }
-

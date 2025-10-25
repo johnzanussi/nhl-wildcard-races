@@ -1,11 +1,12 @@
 ---
-import Analytics from '@vercel/analytics/astro';
 import DateFormat from '@/components/DateFormat.astro';
 import Footer from '@/components/Footer.astro';
 
 import Logo from '@/assets/logo.svg';
 
 import '@/styles/index.css';
+
+const isDev = import.meta.env.DEV;
 
 const title = 'NHL Wild Card Races | Playoff Standings Tracker';
 const description = 'Follow the NHL playoff race with wild card standings. Track teams battling for playoff spots in both conferences.';
@@ -24,67 +25,77 @@ const structuredData = {
 	'sport': 'Ice Hockey',
 	'description': description,
 };
+
 ---
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-	<!-- Primary Meta Tags -->
-	<title>{title}</title>
-	<meta name="title" content={title} />
-	<meta name="description" content={description} />
-	<meta name="keywords" content={keywords} />
-	<meta name="author" content={author} />
-	<meta name="copyright" content={author} />
-	<link rel="canonical" href={siteUrl} />
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content={author} />
+<meta name="copyright" content={author} />
+<link rel="canonical" href={siteUrl} />
 
-	<!-- Icons -->
-	<link rel="icon" type="image/x-icon" href="/favicon.ico">
-	<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="/icons/android-chrome-192x192.png">
-	<link rel="icon" type="image/png" sizes="512x512" href="/icons/android-chrome-512x512.png">
-	<link rel="manifest" href="/site.webmanifest" />
+<!-- Icons -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icons/android-chrome-512x512.png">
+<link rel="manifest" href="/site.webmanifest" />
 
-	<!-- Theme Colors -->
-	<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EBEFF5" />
-	<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121C22" />
+<!-- Theme Colors -->
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EBEFF5" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121C22" />
 
-	<!-- iOS PWA Support -->
-	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-	<meta name="apple-mobile-web-app-title" content="NHL Wild Card Races" />
+<!-- iOS PWA Support -->
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="NHL Wild Card Races" />
 
-	<!-- Generator -->
-	<meta name="generator" content={Astro.generator} />
+<!-- Generator -->
+<meta name="generator" content={Astro.generator} />
 
-	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content={siteUrl} />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
-	<meta property="og:image" content={imageUrl} />
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={siteUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
 
-	<!-- Twitter -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content={siteUrl} />
-	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image" content={imageUrl} />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={siteUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
 
-	<!-- Structured Data -->
-	<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-	<script is:inline>
-		// Restore theme (keep localStorage for theme only)
-		const savedTheme = localStorage.getItem('theme');
-		document.documentElement.setAttribute('data-theme', savedTheme === 'sunset' ? 'sunset' : 'nord');
-	</script>
+<!-- Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+<script is:inline>
+	// Restore theme (keep localStorage for theme only)
+	const savedTheme = localStorage.getItem('theme');
+	document.documentElement.setAttribute('data-theme', savedTheme === 'sunset' ? 'sunset' : 'nord');
+</script>
 
-	<script>
-		import '@/scripts/standings.ts';
-	</script>
+<script>
+	import '@/scripts/standings.ts';
+</script>
+{!isDev && (
+    <script
+        is:inline
+        defer
+        data-domain="nhlwildcard.com"
+		data-api="/api/seCs15RsxqlA"
+        src="/seCs15RsxqlA.js"
+    />
+)}
 </head>
 <body>
 <main class="container mx-auto py-8 px-2 lg:p-8">
@@ -112,6 +123,5 @@ const structuredData = {
 	<Footer />
 
 </main>
-<Analytics />
 </body>
 </html>
