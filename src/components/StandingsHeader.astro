@@ -1,0 +1,31 @@
+---
+import Tooltip from '@/components/Tooltip.astro';
+
+const statColumns = [
+    { key: 'PTS', tooltip: 'Total Points' },
+    { key: 'GR', tooltip: 'Games Remaining' },
+    { key: 'RW', tooltip: 'Regulation Wins' },
+    { key: 'PPR', tooltip: 'Potential Points Remaining' },
+];
+---
+
+<div class="standings-header-grid grid items-center gap-x-1 border-b bg-base-100 border-base-300 p-1.5 md:p-2 mb-1 md:mb-2">
+    <div class="standings-header-cell w-(--standings-col-rank)">
+        Rank
+    </div>
+    <div class="standings-header-cell w-(--standings-col-team) ps-2 md:ps-0">
+        Team
+    </div>
+    {statColumns.map(({ key, tooltip }) => (
+        <Tooltip
+            as="div"
+            content={tooltip}
+            class="standings-header-cell w-(--standings-col-stat) justify-center"
+        >
+            <span class="cursor-help underline decoration-dotted decoration-current/60">{key}</span>
+        </Tooltip>
+    ))}
+    <div class="standings-header-cell ps-1">
+        Schedule
+    </div>
+</div>

@@ -4,11 +4,18 @@ import { getTeamName } from '@/data/Teams.ts';
 
 type Props = {
     teamCode: TeamCode;
+    class?: string;
 };
 
-const teamName = getTeamName(Astro.props.teamCode);
+const { teamCode, class: className } = Astro.props;
+const teamName = getTeamName(teamCode);
 ---
 
-<h3 class="font-medium text-sm md:text-2xl">
-    {teamName}
+<h3 class:list={['font-semibold', className ?? 'text-md md:text-xl']}>
+    <span class="md:hidden">
+        {teamCode}
+    </span>
+    <span class="hidden md:inline">
+        {teamName}
+    </span>
 </h3>

@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import DateFormat from '@/components/DateFormat.astro';
 import Footer from '@/components/Footer.astro';
 
@@ -6,25 +7,57 @@ import Logo from '@/assets/logo.svg';
 
 import '@/styles/index.css';
 
+interface Props {
+    title?: string;
+    description?: string;
+    breadcrumbs?: { name: string; item: string }[];
+    ogImage?: string;
+}
+
+const { title: titleProp, description: descriptionProp, breadcrumbs, ogImage } = Astro.props;
+
 const isDev = import.meta.env.DEV;
 
-const title = 'NHL Wild Card Races | Playoff Standings Tracker';
-const description = 'Follow the NHL playoff race with wild card standings. Track teams battling for playoff spots in both conferences.';
+const defaultTitle = 'NHL Wild Card Races | Playoff Standings Tracker';
+const defaultDescription = 'Follow the NHL playoff race with wild card standings. Track teams battling for playoff spots in both conferences.';
 const siteUrl = 'https://nhlwildcard.com';
-const imageUrl = `${siteUrl}/screenshot.png`;
+
+const title = titleProp ?? defaultTitle;
+const description = descriptionProp ?? defaultDescription;
+const imageUrl = ogImage ?? `${siteUrl}/screenshot.png`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const keywords = 'NHL playoffs, NHL wild card, NHL wild card standings, NHL playoff race, Stanley Cup playoff race, NHL playoff picture, NHL standings, Eastern Conference, Western Conference, NHL playoff tracker, NHL postseason, hockey playoff standings';
 const author = 'John Zanussi';
+const dateModified = new Date().toISOString();
 
-// Structured Data for SEO
-const structuredData = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	'name': title,
-	'url': siteUrl,
-	'logo': imageUrl,
-	'sport': 'Ice Hockey',
-	'description': description,
+// WebSite structured data
+const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': defaultTitle,
+    'url': siteUrl,
+    'description': defaultDescription,
+    'publisher': {
+        '@type': 'Person',
+        'name': author,
+    },
+    'dateModified': dateModified,
 };
+
+// BreadcrumbList structured data (only on pages that provide breadcrumbs)
+const breadcrumbSchema = breadcrumbs ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': siteUrl },
+        ...breadcrumbs.map((crumb, i) => ({
+            '@type': 'ListItem',
+            'position': i + 2,
+            'name': crumb.name,
+            'item': crumb.item,
+        })),
+    ],
+} : null;
 
 ---
 <!doctype html>
@@ -33,16 +66,14 @@ const structuredData = {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="keywords" content={keywords} />
 <meta name="author" content={author} />
 <meta name="copyright" content={author} />
-<link rel="canonical" href={siteUrl} />
+<link rel="canonical" href={canonicalUrl} />
 
-<!-- Icons -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
@@ -51,42 +82,42 @@ const structuredData = {
 <link rel="icon" type="image/png" sizes="512x512" href="/icons/android-chrome-512x512.png">
 <link rel="manifest" href="/site.webmanifest" />
 
-<!-- Theme Colors -->
+<Font cssVariable="--font-inter" preload />
+
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EBEFF5" />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121C22" />
 
-<!-- iOS PWA Support -->
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="NHL Wild Card Races" />
 
-<!-- Generator -->
 <meta name="generator" content={Astro.generator} />
 
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={siteUrl} />
+<meta property="og:url" content={canonicalUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={siteUrl} />
+<meta property="twitter:url" content={canonicalUrl} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageUrl} />
 
-<!-- Structured Data -->
-<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{breadcrumbSchema && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}
 <script is:inline>
-	// Restore theme (keep localStorage for theme only)
 	const savedTheme = localStorage.getItem('theme');
-	document.documentElement.setAttribute('data-theme', savedTheme === 'sunset' ? 'sunset' : 'nord');
+	if (savedTheme === 'dark' || savedTheme === 'light') {
+		document.documentElement.setAttribute('data-theme', savedTheme);
+	} else {
+		document.documentElement.removeAttribute('data-theme');
+	}
 </script>
 
-<script>
-	import '@/scripts/standings.ts';
-</script>
+
 {!isDev && (
     <script
         is:inline
@@ -97,24 +128,21 @@ const structuredData = {
     />
 )}
 </head>
-<body>
-<main class="container mx-auto py-8 px-2 lg:p-8">
+<body class="font-inter">
+<main class="container mx-auto py-4 px-2 md:py-8 lg:p-8">
 
-	<div class="flex justify-between items-end">
+	<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-y-1 py-2">
 
-		<div class="flex items-center gap-2">
-
-			<Logo class="w-12 text-base" />
-
-			<h1 class="text-2xl md:text-3xl font-medium">
+		<div class="flex items-center justify-center md:justify-start gap-3">
+			<Logo class="h-7 shrink-0 text-orange-600 dark:text-orange-400" />
+			<h1 class="text-2xl md:text-3xl font-bold">
 				NHL Wild Card Races
 			</h1>
-
 		</div>
 
-		<span class="text-xs text-end">
-			Last updated <br /><DateFormat />
-		</span>
+		<p class="text-xs text-base-content/60 text-center md:text-right">
+			Last updated <DateFormat />
+		</p>
 
 	</div>
 
@@ -123,5 +151,13 @@ const structuredData = {
 	<Footer />
 
 </main>
+
+<div
+    id="nhl-tooltip"
+    role="tooltip"
+    hidden
+    class="fixed z-50 pointer-events-none px-2 py-1 text-xs rounded bg-neutral text-neutral-content whitespace-nowrap"
+></div>
+
 </body>
 </html>

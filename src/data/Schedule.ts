@@ -5,7 +5,9 @@ export const getLastGames = async (teamCode: TeamCode, numGames = 20): Promise<G
 
     const schedule = await getTeamSchedule(teamCode);
 
-    const regSeasonGames = schedule.games.filter(game => game.gameType !== 3)
+    const regSeasonGames = schedule.games.filter(game => game.gameType === 2);
+
+    let totalPoints = 0;
 
     const lastGames = regSeasonGames.slice(-numGames).map((apiGame) => {
 
@@ -28,6 +30,8 @@ export const getLastGames = async (teamCode: TeamCode, numGames = 20): Promise<G
             const gameEnd = apiGame.gameOutcome.lastPeriodType;
             const points = result === 'win' ? 2 : gameEnd === 'OT' || gameEnd === 'SO' ? 1 : 0;
 
+            totalPoints = totalPoints + points;
+
             const game: GamePlayed = {
                 ...baseGame,
                 isComplete: true,
@@ -35,7 +39,7 @@ export const getLastGames = async (teamCode: TeamCode, numGames = 20): Promise<G
                 result: result,
                 points: points,
                 gameEnd: gameEnd,
-                totalPoints: 0,
+                totalPoints: totalPoints,
             };
 
             return game;

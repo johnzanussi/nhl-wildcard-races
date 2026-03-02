@@ -2,7 +2,7 @@ import { teams, type TeamCode } from '@/data/nhl';
 
 export type BaseGame = {
     id: number;
-    date: string; // Date in YYYY-MM-DD format
+    date: string;
     team: TeamCode;
     opponent: TeamCode;
 }
@@ -26,7 +26,7 @@ export type Schedule = {
     teamCode: TeamCode;
     teamName: string;
     logoUrl: string;
-    games: Game[]; // Array of games for the team
+    games: Game[];
 };
 
 export type Team = {
@@ -34,18 +34,34 @@ export type Team = {
     code: string;
     name: string;
     logoUrl: string;
-    games: Game[]; // Array of games for the team
+    games: Game[];
 };
 
 export const getTeamName = (code: TeamCode) => {
     return teams[code].name;
 };
 
+export const getEspnTeamCode = (code: TeamCode) => {
+    const team = teams[code];
+    return 'codeEspn' in team ? team.codeEspn : code;
+}
+
+export type LogoProvider = 'nhl' | 'espn';
+
 export type LogoType = 'light' | 'dark';
 
 export const getTeamLogoUrl = (
     teamCode: TeamCode,
+    provider: LogoProvider = 'espn',
     type: LogoType = 'light'
 ) => {
-    return `https://assets.nhle.com/logos/nhl/svg/${teamCode}_${type}.svg`;
+
+    if (provider === 'espn') {
+        return `https://a.espncdn.com/i/teamlogos/nhl/500/${getEspnTeamCode(teamCode)}.png`;
+    }
+
+    if (provider === 'nhl') {
+        return `https://assets.nhle.com/logos/nhl/svg/${teamCode}_${type}.svg`;
+    }
+
 }

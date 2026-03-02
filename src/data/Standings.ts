@@ -8,6 +8,8 @@ import {
     WILDCARD_SPOTS
 } from '@/data/nhl';
 
+export type DivisionShort = string;
+
 export type TeamStanding = {
     teamCode: TeamCode;
     conferenceAbbrev: ConferenceAbbrev;
@@ -15,6 +17,7 @@ export type TeamStanding = {
     divisionName: string;
     divisionAbbrev: DivisionAbbrev;
     divisionPlace: number;
+    divisionShort: DivisionShort;
     wildCardPlace: number;
     isInPlayoffs: boolean;
     isInWildCard: boolean;
@@ -22,6 +25,7 @@ export type TeamStanding = {
     gamesRemaining: number;
     points: number;
     pointsBack: number;
+    potentialPointsRemaining: number;
     regulationWins: number;
     isEliminated: boolean;
 };
@@ -66,13 +70,12 @@ export const getConfStandings = async (conference: ConferenceKey, isPlayoffs: bo
 
     const confAbbrev = confMap[conference];
 
-    return STANDINGS_CACHE[confAbbrev].teams.filter(team => (!team.isInPlayoffs || (isPlayoffs && team.isInPlayoffs)));
+    return STANDINGS_CACHE[confAbbrev].teams.filter(team => !team.isInPlayoffs || isPlayoffs);
 }
 
 export const getStandings = async () => {
     const standings = await fetchStandings();
 
-    // Pre-initialize division buckets to avoid conditional checks
     const divisionBuckets: Record<DivisionAbbrev, TeamStanding[]> = {
         A: [],
         M: [],
@@ -80,25 +83,21 @@ export const getStandings = async () => {
         P: []
     };
 
-    // Track wildcard 2 points for each conference
     const wildcard2Points: Record<ConferenceAbbrev, number> = {
         E: 0,
         W: 0
     };
 
-    // First pass: find wildcard 2 points for each conference
     standings.standings.forEach((team) => {
         if (team.wildcardSequence === 2) {
             wildcard2Points[team.conferenceAbbrev] = team.points;
         }
     });
 
-    // Second pass: transform and bucket all teams by division
     standings.standings.forEach((team) => {
         const isWildCard = !!(team.wildcardSequence && team.wildcardSequence <= WILDCARD_SPOTS);
         let pointsBack = 0;
 
-        // Calculate points back for wildcard contenders (not in top 2)
         if (team.wildcardSequence && team.wildcardSequence > 2) {
             pointsBack = wildcard2Points[team.conferenceAbbrev] - team.points;
         }
@@ -108,6 +107,7 @@ export const getStandings = async () => {
             divisionName: team.divisionName,
             divisionAbbrev: team.divisionAbbrev,
             divisionPlace: team.divisionSequence,
+            divisionShort: team.divisionName.slice(0, 3).toUpperCase(),
             conferenceAbbrev: team.conferenceAbbrev,
             conferencePlace: team.conferenceSequence,
             isInPlayoffs: !team.wildcardSequence,
@@ -116,15 +116,15 @@ export const getStandings = async () => {
             gamesPlayed: team.gamesPlayed,
             gamesRemaining: REGULAR_SEASON_GAMES - team.gamesPlayed,
             points: team.points,
+            pointsBack: pointsBack,
+            potentialPointsRemaining: (REGULAR_SEASON_GAMES - team.gamesPlayed) * 2,
             regulationWins: team.regulationWins,
             isEliminated: team.clinchIndicator === 'e',
-            pointsBack: pointsBack,
         };
 
         divisionBuckets[team.divisionAbbrev].push(teamObj);
     });
 
-    // Sort divisions and split into playoff (top 3) and non-playoff teams by conference
     type ConferenceTeams = {
         playoffs: TeamStanding[];
         teams: TeamStanding[];
@@ -153,7 +153,6 @@ export const getStandings = async () => {
         },
     } as Record<ConferenceAbbrev, ConferenceTeams>);
 
-    // Combine playoff teams with remaining teams sorted by conference place
     conferenceGroups.E.teams.sort((a, b) => a.conferencePlace - b.conferencePlace);
     conferenceGroups.W.teams.sort((a, b) => a.conferencePlace - b.conferencePlace);
 

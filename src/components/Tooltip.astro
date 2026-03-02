@@ -1,0 +1,22 @@
+---
+export type Props = {
+    content: string;
+    placement?: 'top' | 'bottom';
+    as?: string;
+    class?: string;
+};
+
+const { content, placement = 'bottom', as: Tag = 'span', class: className } = Astro.props;
+---
+
+<Tag
+    data-tooltip={content}
+    data-tooltip-placement={placement}
+    class={className}
+>
+    <slot />
+</Tag>
+
+<script>
+    import '@/scripts/tooltip';
+</script>
