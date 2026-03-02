@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 cache
 .cache/
+
+# api cache integration config (generated at dev server start)
+.api-cache-config.json

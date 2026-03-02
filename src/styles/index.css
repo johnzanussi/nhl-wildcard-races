@@ -1,6 +1,62 @@
 @import 'tailwindcss';
+
 @plugin "daisyui" {
-    themes: nord --default, sunset --prefersdark;
+    themes:
+        nord --default,
+        black;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@view-transition {
+    navigation: auto;
+}
+
+@layer base {
+    :root {
+        --standings-col-rank: 40px;
+        --standings-col-team: 205px;
+        --standings-col-stat: 40px;
+        --standings-row-height: 80px;
+    }
+
+    @media (max-width: 640px)  {
+        :root {
+            --standings-col-rank: 30px;
+            --standings-col-team: 65px;
+            --standings-col-stat: 20px;
+        }
+    }
+    @media (min-width: 768px) {
+        :root {
+            --standings-col-rank: 35px;
+            --standings-col-team: 190px;
+            --standings-col-stat: 35px;
+        }
+    }
+
+
+}
+
+@utility standings-row-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        var(--standings-col-team)
+        repeat(4, var(--standings-col-stat));
+}
+
+@utility standings-header-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        var(--standings-col-team)
+        repeat(4, var(--standings-col-stat))
+        1fr;
+}
+
+@utility standings-row-base {
+    @apply h-(--standings-row-height) px-2 mb-2 bg-base-200 hover:bg-base-300;
+}
+
+@utility standings-header-cell {
+    @apply flex items-center text-[10px] md:text-xs font-bold;
+}

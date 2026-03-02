@@ -1,43 +1,56 @@
 ---
 import Logo from '@/components/Team/Logo.astro';
 import { formatDate } from '@/lib/date';
+import type { Game } from '@/data/Teams';
+
+type Props = {
+    game: Game;
+    size?: number;
+};
 
 const {
     game,
+    size = 40,
 } = Astro.props;
+
+const playedGame = game.isComplete ? game : null;
 ---
 <div class:list={[
     'text-center',
     {
-        'result-unplayed': !game.result,
-        'result-played': !!game.result,
+        'result-unplayed': !playedGame,
+        'result-played': !!playedGame,
     }
 ]}>
 
-    <div class="text-xs font-medium h-4">
-        {game.score ?? ``}
+    <div class="text-[0.6rem] font-medium h-4">
+        {playedGame?.score ?? ``}
     </div>
 
     <div
-        data-tip={formatDate(game.date)}
+        data-tooltip={formatDate(game.date)}
         class:list={[
-            'tooltip tooltip-bottom rounded relative size-[55px] text-center flex items-center my-1 z-1',
+            'rounded relative size-(--size) text-center flex items-center z-1',
             {
-                'bg-green-500': game.result === 'win', // Win
-                'bg-red-800': game.result === 'loss' && game.gameEnd === 'REG', // Regulation Loss
-                'bg-yellow-600': game.result === 'loss' && game.gameEnd !== 'REG', // OT/SO Loss
-                'bg-zinc-400': !game.result,
+                'bg-green-600': playedGame?.result === 'win',
+                'bg-red-800': playedGame?.result === 'loss' && playedGame?.gameEnd === 'REG',
+                'bg-yellow-600': playedGame?.result === 'loss' && playedGame?.gameEnd !== 'REG',
+                'bg-zinc-400': !playedGame,
             }
         ]}
+        style={`--size: ${size}px`}
     >
         <div class="opacity-75 text-center w-full">
-            <Logo teamCode={game.opponent} />
+            <Logo
+                teamCode={game.opponent}
+                size={size}
+            />
         </div>
     </div>
 
-    {!!game.totalPoints && (
-        <div class="text-xs font-medium">
-            {game.totalPoints}
+    {playedGame && playedGame.totalPoints >= 0 && (
+        <div class="text-[0.6rem] font-medium">
+            {playedGame.totalPoints}
         </div>
     )}
 

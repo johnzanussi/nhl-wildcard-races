@@ -2,11 +2,11 @@
 import type { HTMLAttributes } from 'astro/types';
 export type Props = HTMLAttributes<'a'>;
 
-const { href, ...props } = Astro.props;
+const { href, class: className, ...rest } = Astro.props;
 
 if (href?.toString().startsWith('http')) {
-    props.target = '_blank';
-    props.rel = 'noopener noreferrer';
+    rest.target = '_blank';
+    rest.rel = 'noopener noreferrer';
 }
 ---
-<a href={href} {...props} class="link"><slot /></a>
+<a href={href} {...rest} class:list={['link', className]}><slot /></a>

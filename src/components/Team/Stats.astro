@@ -1,29 +1,18 @@
 ---
-type Data = {
-    label: string;
-    stat: string | number;
-};
-
 type Props = {
-    data: Data[];
+    pts: number;
+    gr: number;
+    rw: number;
+    ppr: number;
 };
 
-const {
-    data,
-} = Astro.props;
+const { pts, gr, rw, ppr } = Astro.props;
+
+const values = [pts, gr, rw, ppr];
 ---
 
-<div class="flex gap-1 sm:gap-4 mt-1">
-    {data.map(({ label, stat }) => {
-        return (
-            <div class="text-center max-w-10 sm:max-w-15">
-                <div class="text-xs sm:text-lg font-medium">
-                    {stat}
-                </div>
-                <div class="text-[8px]/[10px] sm:text-xs">
-                    {label}
-                </div>
-            </div>
-        );
-    })}
-</div>
+{values.map((value) => (
+    <div class="w-(--standings-col-stat) text-center text-xs font-medium md:text-lg shrink-0">
+        {value}
+    </div>
+))}

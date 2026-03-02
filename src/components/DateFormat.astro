@@ -1,22 +1,17 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends HTMLAttributes<'time'> {
-    date?: string;
-}
+export interface Props extends HTMLAttributes<'time'> {}
 
-const {
-    date,
-    ...props
-} = Astro.props;
+const { ...props } = Astro.props;
 
 const dateIso = new Date().toISOString();
 ---
 
-<time datetime={dateIso} {...props}>&nbsp;</time>
+<time data-build-time datetime={dateIso} {...props}>&nbsp;</time>
 
 <script>
-document.querySelectorAll('time').forEach((el) => {
+document.querySelectorAll('time[data-build-time]').forEach((el) => {
     const dateIso = el.getAttribute('datetime');
     if (dateIso) {
         const date = new Date(dateIso);

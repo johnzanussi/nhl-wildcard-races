@@ -1,8 +1,10 @@
 ---
 import { getConfStandings, getConferences, type ConferenceKey } from '@/data/Standings.ts';
 import TeamCard from '@/components/Team/Card.astro';
+import StandingsHeader from '@/components/StandingsHeader.astro';
 import Divider from '@/components/Divider.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
+import TeamSchedule from '@/components/TeamSchedule.astro';
 
 type Props = {
     conference?: ConferenceKey;
@@ -16,30 +18,31 @@ const {
 
 const confStandings = await getConfStandings(conference, isPlayoffs);
 
-let teamCount = 0;
+const wildCardDividerAt = isPlayoffs ? 5 : null;
+const bubbleDividerAt = isPlayoffs ? 7 : 1;
 ---
-<div class="flex my-4 lg:my-8 items-center justify-between">
+
+<div
+    class="flex my-4 lg:my-8 items-center justify-start gap-3 mb-2"
+    style="view-transition-name: standings-controls"
+>
 
     <div
         class="tabs tabs-lg tabs-box md:w-1/2"
         role="tablist"
     >
-
-        {getConferences().map(({ label, key }) => {
-            return (
-                <a
-                    role="tab"
-                    class:list={['tab grow', {
-                        'tab-active': key === conference,
-                    }]}
-                    href={`/${key}${isPlayoffs ? '/playoffs' : ''}`}
-                >
-                    {label}
-                </a>
-            );
-
-        })}
-
+        {getConferences().map(({ label, key }) => (
+            <a
+                role="tab"
+                aria-selected={key === conference}
+                class:list={['tab grow', {
+                    'tab-active': key === conference,
+                }]}
+                href={`/${key}${isPlayoffs ? '/playoffs' : ''}`}
+            >
+                {label}
+            </a>
+        ))}
     </div>
 
     <div>
@@ -59,34 +62,82 @@ let teamCount = 0;
         </script>
     </div>
 
-    <ThemeToggle />
+    <div class="md:ml-auto">
+        <ThemeToggle />
+    </div>
 
 </div>
 
-<div class="tab-panel w-full overflow-x-auto">
-    {confStandings.map((team) => {
-        teamCount++;
+<div class="my-6" style="view-transition-name: standings-grid">
+    <div class="sticky top-0 z-20 overflow-x-hidden">
+        <StandingsHeader />
+    </div>
 
-        const showWildCardDivider = isPlayoffs && teamCount === 6;
-        const showNoPlayoffsDivider = isPlayoffs && teamCount === 8 || !isPlayoffs && teamCount === 2;
+    <div class="schedule-scroll overflow-x-auto">
+        <div class="min-w-max">
+            <div class="flex items-start">
+                <div class="sticky left-0 z-10 bg-base-100">
+                    {confStandings.map((team, i) => {
+                        const showWildCardDivider = i === wildCardDividerAt;
+                        const showNoPlayoffsDivider = i === bubbleDividerAt;
 
-        return (
-            <>
-                <TeamCard team={team} />
+                        return (
+                            <>
+                                <TeamCard team={team} />
 
-                {showWildCardDivider && (
-                    <Divider class="divider-accent">
-                        Wild Card
-                    </Divider>
-                )}
+                                {showWildCardDivider && (
+                                    <Divider class="divider-accent">
+                                        Wild Card
+                                    </Divider>
+                                )}
 
-                {showNoPlayoffsDivider && (
-                    <Divider class="divider-error">
-                        No Playoffs
-                    </Divider>
-                )}
+                                {showNoPlayoffsDivider && (
+                                    <Divider class="divider-error">
+                                        Bubble
+                                    </Divider>
+                                )}
+                            </>
+                        );
+                    })}
+                </div>
 
-            </>
-        );
-    })}
+                <div class="flex-1">
+                    <div class="min-w-max">
+                        {confStandings.map((team, i) => {
+                            const showWildCardDivider = i === wildCardDividerAt;
+                            const showNoPlayoffsDivider = i === bubbleDividerAt;
+
+                            return (
+                                <>
+                                    <div
+                                        class="standings-row-base flex items-center rounded-e-lg ps-0"
+                                        data-team-code={team.teamCode}
+                                    >
+                                        <TeamSchedule
+                                            teamCode={team.teamCode}
+                                            size={32}
+                                        />
+                                    </div>
+
+                                    {showWildCardDivider && (
+                                        <Divider class="divider-accent" />
+                                    )}
+
+                                    {showNoPlayoffsDivider && (
+                                        <Divider class="divider-error" />
+                                    )}
+                                </>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<script>
+    import '@/scripts/teams';
+    import '@/scripts/scroll-to-last-game';
+</script>

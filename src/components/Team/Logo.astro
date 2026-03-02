@@ -1,27 +1,34 @@
 ---
 import { Image } from 'astro:assets';
 import { type TeamCode } from '@/data/nhl';
-import { type LogoType, getTeamLogoUrl, getTeamName } from '@/data/Teams.ts';
+import { type LogoType, type LogoProvider, getTeamLogoUrl, getTeamName } from '@/data/Teams.ts';
 
 type Props = {
     teamCode: TeamCode;
     type?: LogoType;
+    size?: number;
+    provider?: LogoProvider;
+    loading?: 'lazy' | 'eager';
 };
 
 const {
     teamCode,
-    type
+    type,
+    size = 60,
+    provider = 'espn',
+    loading = 'lazy',
 } = Astro.props;
 
-const imageUrl = getTeamLogoUrl(teamCode, type);
+const imageUrl = getTeamLogoUrl(teamCode, provider, type);
 const teamName = getTeamName(teamCode);
 ---
 
 <Image
     src={imageUrl}
-    alt={teamName}
-    width="100"
-    height="67"
-    loading="lazy"
-    class="inline w-[60px] me-3"
+    alt={`${teamName} logo`}
+    width={size}
+    height={size}
+    loading={loading}
+    class="inline w-(--logo-size)"
+    style={`--logo-size: ${size}px`}
 />

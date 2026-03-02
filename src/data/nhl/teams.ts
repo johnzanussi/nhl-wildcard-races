@@ -62,7 +62,8 @@ export const teams ={
     "LAK": {
         "id": 26,
         "name": "Los Angeles Kings",
-        "code": "LAK"
+        "code": "LAK",
+        "codeEspn": "LA"
     },
     "MIN": {
         "id": 30,
@@ -117,7 +118,8 @@ export const teams ={
     "SJS": {
         "id": 28,
         "name": "San Jose Sharks",
-        "code": "SJS"
+        "code": "SJS",
+        "codeEspn": "SJ"
     },
     "STL": {
         "id": 19,
@@ -127,7 +129,8 @@ export const teams ={
     "TBL": {
         "id": 14,
         "name": "Tampa Bay Lightning",
-        "code": "TBL"
+        "code": "TBL",
+        "codeEspn": "TB"
     },
     "TOR": {
         "id": 10,

@@ -258,27 +258,3 @@ export interface TeamStanding {
   streakCode: string; // e.g., "W" for winning streak, "L" for losing streak, "OT" for overtime loss streak
   streakCount: number;
 }
-
-// ======== UTILITY TYPES ========
-
-/**
- * Converts a Team (from Schedule) to a partial TeamStanding with common fields
- */
-export type TeamToStanding = Pick<Team, 'id' | 'commonName' | 'placeName' | 'abbrev' | 'logo'> & {
-  // Additional fields required to create a TeamStanding
-};
-
-/**
- * Helper to extract a team from standings
- */
-export interface StandingsTeam {
-  id: number;
-  name: string;
-  abbrev: TeamCode;
-  wins: number;
-  losses: number;
-  otLosses: number;
-  points: number;
-  division: string;
-  conference: string;
-}

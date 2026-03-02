@@ -2,12 +2,11 @@
     "name": "NHL Wild Card Races | Playoff Standings Tracker",
     "short_name": "NHL Wild Card",
     "description": "Follow the NHL playoff race with wild card standings. Track teams battling for playoff spots in both conferences.",
-    "start_url": "/",
+    "start_url": "/east",
     "scope": "/",
     "display": "standalone",
-    "orientation": "portrait",
     "background_color": "#EBEFF5",
-    "theme_color": "#ffffff",
+    "theme_color": "#EBEFF5",
     "icons": [
         {
             "src": "/icons/favicon-16x16.png",
