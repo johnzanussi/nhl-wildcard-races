@@ -23,7 +23,7 @@
     @media (max-width: 640px)  {
         :root {
             --standings-col-rank: 30px;
-            --standings-col-team: 65px;
+            --standings-col-team: 30px;
             --standings-col-stat: 20px;
         }
     }
