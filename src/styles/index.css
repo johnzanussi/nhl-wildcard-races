@@ -60,7 +60,8 @@
     @apply flex items-center text-[10px] md:text-xs font-bold;
 }
 
-html.stats-hidden [data-stat-cell] {
+html.stats-hidden [data-stat-cell],
+html.stats-hidden .stat-points-back {
     display: none;
 }
 html.stats-hidden .standings-row-grid {
