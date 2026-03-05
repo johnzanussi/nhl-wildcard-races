@@ -3,6 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import apiCacheToolbar from './integrations/nhl-cache-toolbar/index.ts';
+import captureScreenshots from './integrations/capture-screenshots/index.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,6 +18,7 @@ export default defineConfig({
             },
         }),
         apiCacheToolbar({ cacheDir: 'nhl' }),
+        captureScreenshots(),
     ],
     experimental: {
         fonts: [{

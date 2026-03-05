@@ -14,12 +14,14 @@
         "preview": "astro preview",
         "astro": "astro",
         "check": "astro check",
-        "test:track-games": "dotenv -e .env -- tsx scripts/track-games.ts"
+        "test:track-games": "dotenv -e .env -- tsx scripts/track-games.ts",
+        "screenshots": "CAPTURE_SCREENSHOTS=1 npx astro build"
     },
     "dependencies": {
         "@astrojs/sitemap": "^3.7.0",
         "@tailwindcss/vite": "^4.2.1",
         "astro": "^5.18.0",
+        "capture-website": "^5.1.0",
         "ky": "^1.14.3",
         "tailwindcss": "^4.2.1"
     },

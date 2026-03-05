@@ -11,10 +11,9 @@ interface Props {
     title?: string;
     description?: string;
     breadcrumbs?: { name: string; item: string }[];
-    ogImage?: string;
 }
 
-const { title: titleProp, description: descriptionProp, breadcrumbs, ogImage } = Astro.props;
+const { title: titleProp, description: descriptionProp, breadcrumbs } = Astro.props;
 
 const isDev = import.meta.env.DEV;
 
@@ -24,7 +23,8 @@ const siteUrl = 'https://nhlwildcard.com';
 
 const title = titleProp ?? defaultTitle;
 const description = descriptionProp ?? defaultDescription;
-const imageUrl = ogImage ?? `${siteUrl}/screenshot.png`;
+const normalizedPath = Astro.url.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-');
+const imageUrl = `${siteUrl}/screenshot-${normalizedPath ? normalizedPath : 'east'}.jpg`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const keywords = 'NHL playoffs, NHL wild card, NHL wild card standings, NHL playoff race, Stanley Cup playoff race, NHL playoff picture, NHL standings, Eastern Conference, Western Conference, NHL playoff tracker, NHL postseason, hockey playoff standings';
 const author = 'John Zanussi';

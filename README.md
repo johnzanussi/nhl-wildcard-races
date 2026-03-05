@@ -1,6 +1,6 @@
 # NHL Wildcard Races
 
-![NHL Wild Card Races Banner](public/screenshot.png)
+![NHL Wild Card Races Banner](public/screenshot-east.jpg)
 
 https://nhlwildcard.com
 
