@@ -33,7 +33,7 @@
     if (themeToggle) {
         // Sync checkbox with current theme
         const currentTheme = document.documentElement.getAttribute('data-theme');
-        themeToggle.checked = currentTheme === 'dark';
+        themeToggle.checked = currentTheme === 'sunset';
 
         themeToggle.addEventListener('change', (e: Event) => {
             const target = e.currentTarget as HTMLInputElement;

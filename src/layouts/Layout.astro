@@ -110,7 +110,7 @@ const breadcrumbSchema = breadcrumbs ? {
 )}
 <script is:inline>
 	const savedTheme = localStorage.getItem('theme');
-	if (savedTheme === 'dark' || savedTheme === 'light') {
+	if (savedTheme === 'sunset' || savedTheme === 'light') {
 		document.documentElement.setAttribute('data-theme', savedTheme);
 	} else {
 		document.documentElement.removeAttribute('data-theme');
