@@ -19,13 +19,31 @@ const statColumns = [
     {statColumns.map(({ key, tooltip }) => (
         <Tooltip
             as="div"
+            data-stat-cell
             content={tooltip}
             class="standings-header-cell w-(--standings-col-stat) justify-center"
         >
             <span class="cursor-help underline decoration-dotted decoration-current/60">{key}</span>
         </Tooltip>
     ))}
-    <div class="standings-header-cell ps-1">
-        Schedule
+    <div class="standings-header-cell ps-1 flex justify-between w-full">
+        <span>Schedule</span>
+        <label class="label font-normal">
+            Toggle Stats
+            <input id="stats-toggle" type="checkbox" class="toggle toggle-xs" title="Toggle stats columns" />
+        </label>
     </div>
 </div>
+
+<script>
+(() => {
+    const toggle = document.getElementById('stats-toggle') as HTMLInputElement;
+    if (toggle) {
+        toggle.checked = document.documentElement.classList.contains('stats-hidden');
+        toggle.addEventListener('change', () => {
+            document.documentElement.classList.toggle('stats-hidden', toggle.checked);
+            localStorage.setItem('stats-visible', toggle.checked ? 'false' : 'true');
+        });
+    }
+})();
+</script>

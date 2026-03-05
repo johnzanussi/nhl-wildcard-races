@@ -4,15 +4,17 @@ export type Props = {
     placement?: 'top' | 'bottom';
     as?: string;
     class?: string;
+    [key: string]: unknown;
 };
 
-const { content, placement = 'bottom', as: Tag = 'span', class: className } = Astro.props;
+const { content, placement = 'bottom', as: Tag = 'span', class: className, ...rest } = Astro.props;
 ---
 
 <Tag
     data-tooltip={content}
     data-tooltip-placement={placement}
     class={className}
+    {...rest}
 >
     <slot />
 </Tag>

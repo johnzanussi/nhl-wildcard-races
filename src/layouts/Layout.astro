@@ -115,6 +115,9 @@ const breadcrumbSchema = breadcrumbs ? {
 	} else {
 		document.documentElement.removeAttribute('data-theme');
 	}
+	if (localStorage.getItem('stats-visible') === 'false') {
+		document.documentElement.classList.add('stats-hidden');
+	}
 </script>
 
 

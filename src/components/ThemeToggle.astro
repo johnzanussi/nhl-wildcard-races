@@ -6,7 +6,7 @@
     id="theme-toggle"
     type="checkbox"
     class="theme-controller"
-    value="black"
+    value="sunset"
   />
 
   <svg
@@ -37,7 +37,7 @@
 
         themeToggle.addEventListener('change', (e: Event) => {
             const target = e.currentTarget as HTMLInputElement;
-            const theme = target.checked ? 'dark' : 'light';
+            const theme = target.checked ? 'sunset' : 'light';
             localStorage.setItem('theme', theme);
             document.documentElement.setAttribute('data-theme', theme);
         });

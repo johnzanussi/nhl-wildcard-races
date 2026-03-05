@@ -3,10 +3,10 @@
 @plugin "daisyui" {
     themes:
         nord --default,
-        black;
+        sunset;
 }
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where([data-theme=sunset], [data-theme=sunset] *));
 
 @view-transition {
     navigation: auto;
@@ -37,14 +37,14 @@
 
 }
 
-@utility standings-row-grid {
+.standings-row-grid {
     grid-template-columns:
         var(--standings-col-rank)
         var(--standings-col-team)
         repeat(4, var(--standings-col-stat));
 }
 
-@utility standings-header-grid {
+.standings-header-grid {
     grid-template-columns:
         var(--standings-col-rank)
         var(--standings-col-team)
@@ -58,4 +58,19 @@
 
 @utility standings-header-cell {
     @apply flex items-center text-[10px] md:text-xs font-bold;
+}
+
+html.stats-hidden [data-stat-cell] {
+    display: none;
+}
+html.stats-hidden .standings-row-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        var(--standings-col-team);
+}
+html.stats-hidden .standings-header-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        var(--standings-col-team)
+        1fr;
 }
