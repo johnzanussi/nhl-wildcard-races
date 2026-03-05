@@ -22,7 +22,7 @@
 
     @media (max-width: 640px)  {
         :root {
-            --standings-col-rank: 30px;
+            --standings-col-rank: 25px;
             --standings-col-team: 30px;
             --standings-col-stat: 20px;
         }
@@ -34,7 +34,6 @@
             --standings-col-stat: 35px;
         }
     }
-
 
 }
 
@@ -54,7 +53,7 @@
 }
 
 @utility standings-row-base {
-    @apply h-(--standings-row-height) px-2 mb-2 bg-base-200 hover:bg-base-300;
+    @apply h-(--standings-row-height) px-1 sm:px-2 mb-2 bg-base-200 hover:bg-base-300;
 }
 
 @utility standings-header-cell {
