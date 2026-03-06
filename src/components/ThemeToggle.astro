@@ -1,4 +1,5 @@
 ---
+import { DARK_THEME, LIGHT_THEME } from '@/config';
 ---
 
 <label class="swap swap-rotate text-base-content">
@@ -6,7 +7,7 @@
     id="theme-toggle"
     type="checkbox"
     class="theme-controller"
-    value="sunset"
+    value={DARK_THEME}
   />
 
   <svg
@@ -27,20 +28,14 @@
 </label>
 
 <script>
-(() => {
-    const themeToggle = document.getElementById('theme-toggle') as HTMLInputElement;
+import { DARK_THEME, LIGHT_THEME } from '@/config';
+import { initLocalStorageToggle } from '@/scripts/local-storage-toggle';
 
-    if (themeToggle) {
-        // Sync checkbox with current theme
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        themeToggle.checked = currentTheme === 'sunset';
-
-        themeToggle.addEventListener('change', (e: Event) => {
-            const target = e.currentTarget as HTMLInputElement;
-            const theme = target.checked ? 'sunset' : 'light';
-            localStorage.setItem('theme', theme);
-            document.documentElement.setAttribute('data-theme', theme);
-        });
-    }
-})();
+initLocalStorageToggle({
+    toggleId: 'theme-toggle',
+    storageKey: 'theme',
+    getChecked: () => document.documentElement.getAttribute('data-theme') === DARK_THEME,
+    apply: (checked) => document.documentElement.setAttribute('data-theme', checked ? DARK_THEME : LIGHT_THEME),
+    toStorageValue: (checked) => checked ? DARK_THEME : LIGHT_THEME,
+});
 </script>

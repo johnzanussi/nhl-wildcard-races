@@ -6,6 +6,7 @@ import Footer from '@/components/Footer.astro';
 import Logo from '@/assets/logo.svg';
 
 import '@/styles/index.css';
+import { DARK_THEME, LIGHT_THEME } from '@/config';
 
 interface Props {
     title?: string;
@@ -108,9 +109,9 @@ const breadcrumbSchema = breadcrumbs ? {
 {breadcrumbSchema && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
-<script is:inline>
+<script is:inline define:vars={{ DARK_THEME, LIGHT_THEME }}>
 	const savedTheme = localStorage.getItem('theme');
-	if (savedTheme === 'sunset' || savedTheme === 'light') {
+	if (savedTheme === DARK_THEME || savedTheme === LIGHT_THEME) {
 		document.documentElement.setAttribute('data-theme', savedTheme);
 	} else {
 		document.documentElement.removeAttribute('data-theme');

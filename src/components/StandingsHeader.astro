@@ -36,14 +36,13 @@ const statColumns = [
 </div>
 
 <script>
-(() => {
-    const toggle = document.getElementById('stats-toggle') as HTMLInputElement;
-    if (toggle) {
-        toggle.checked = document.documentElement.classList.contains('stats-hidden');
-        toggle.addEventListener('change', () => {
-            document.documentElement.classList.toggle('stats-hidden', toggle.checked);
-            localStorage.setItem('stats-visible', toggle.checked ? 'false' : 'true');
-        });
-    }
-})();
+import { initLocalStorageToggle } from '@/scripts/local-storage-toggle';
+
+initLocalStorageToggle({
+    toggleId: 'stats-toggle',
+    storageKey: 'stats-visible',
+    getChecked: () => !document.documentElement.classList.contains('stats-hidden'),
+    apply: (checked) => document.documentElement.classList.toggle('stats-hidden', !checked),
+    toStorageValue: (checked) => checked ? 'true' : 'false',
+});
 </script>
