@@ -20,5 +20,14 @@ const { content, placement = 'bottom', as: Tag = 'span', class: className, ...re
 </Tag>
 
 <script>
-    import '@/scripts/tooltip';
+    (function () {
+        function load() {
+            import('@/scripts/tooltip');
+        }
+        if (typeof requestIdleCallback !== 'undefined') {
+            requestIdleCallback(load, { timeout: 2000 });
+        } else {
+            setTimeout(load, 1);
+        }
+    })();
 </script>

@@ -9,6 +9,7 @@ type Props = {
     size?: number;
     provider?: LogoProvider;
     loading?: 'lazy' | 'eager';
+    priority?: boolean;
 };
 
 const {
@@ -17,6 +18,7 @@ const {
     size = 60,
     provider = 'espn',
     loading = 'lazy',
+    priority = false,
 } = Astro.props;
 
 const imageUrl = getTeamLogoUrl(teamCode, provider, type);
@@ -30,6 +32,8 @@ const teamName = getTeamName(teamCode);
     height={size}
     densities={[1, 2, 3]}
     loading={loading}
+    decoding="async"
+    fetchpriority={priority ? 'high' : 'low'}
     class="inline w-(--logo-size)"
     style={`--logo-size: ${size}px`}
 />

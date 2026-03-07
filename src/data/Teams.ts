@@ -54,14 +54,12 @@ export const getTeamLogoUrl = (
     teamCode: TeamCode,
     provider: LogoProvider = 'espn',
     type: LogoType = 'light'
-) => {
-
+): string => {
     if (provider === 'espn') {
         return `https://a.espncdn.com/i/teamlogos/nhl/500/${getEspnTeamCode(teamCode)}.png`;
     }
-
     if (provider === 'nhl') {
         return `https://assets.nhle.com/logos/nhl/svg/${teamCode}_${type}.svg`;
     }
-
-}
+    return `https://a.espncdn.com/i/teamlogos/nhl/500/${getEspnTeamCode(teamCode)}.png`;
+};
