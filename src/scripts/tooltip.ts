@@ -37,3 +37,5 @@ document.querySelectorAll('[data-tooltip]').forEach((el) => {
 });
 
 window.addEventListener('scroll', hideTooltip, { passive: true });
+
+export {};

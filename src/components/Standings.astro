@@ -36,7 +36,7 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
 
                         return (
                             <>
-                                <TeamCard team={team} />
+                                <TeamCard team={team} priority={i === 0} />
 
                                 {showWildCardDivider && (
                                     <Divider class="divider-accent before:w-[75px] before:shrink-0">
@@ -90,6 +90,15 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
 </div>
 
 <script>
-    import '@/scripts/teams';
-    import '@/scripts/scroll-to-last-game';
+    import('@/scripts/scroll-to-last-game');
+    (function () {
+        function load() {
+            import('@/scripts/teams');
+        }
+        if (typeof requestIdleCallback !== 'undefined') {
+            requestIdleCallback(load, { timeout: 2000 });
+        } else {
+            setTimeout(load, 1);
+        }
+    })();
 </script>

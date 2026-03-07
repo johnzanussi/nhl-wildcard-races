@@ -16,3 +16,5 @@ if (scroller) {
 
     requestAnimationFrame(scrollToLastGame);
 }
+
+export {};

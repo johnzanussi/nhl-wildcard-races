@@ -7,9 +7,10 @@ import Stats from '@/components/Team/Stats.astro';
 
 type Props = {
     team: TeamStanding;
+    priority?: boolean;
 };
 
-const { team } = Astro.props;
+const { team, priority = false } = Astro.props;
 
 
 const getRankDisplay = (t: TeamStanding): { primary: string | number; sub?: string } => {
@@ -53,6 +54,7 @@ const rankDisplay = getRankDisplay(team);
                 teamCode={team.teamCode}
                 size={25}
                 loading="eager"
+                priority={priority}
             />
             <div class=" flex flex-row items-baseline gap-1.5 md:flex-col md:items-start md:gap-0 justify-center">
                 <TeamName

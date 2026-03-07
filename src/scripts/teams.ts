@@ -19,3 +19,5 @@ selectTeamDivs().forEach(el => {
         toggleClass(selectTeamDivs(el.dataset.teamCode));
     });
 });
+
+export {};
