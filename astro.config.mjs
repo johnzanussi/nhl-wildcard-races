@@ -14,6 +14,8 @@ export default defineConfig({
             filter: (page) => page !== 'https://nhlwildcard.com/',
             serialize(item) {
                 item.lastmod = new Date().toISOString();
+                item.changefreq = 'daily';
+                item.priority = item.url.includes('/playoffs') ? 0.8 : 0.9;
                 return item;
             },
         }),

@@ -1,20 +1,30 @@
 ---
 import Link from '@/components/Link.astro';
+
+const links = [
+    { href: '/east', label: 'Eastern Conference Wild Card' },
+    { href: '/east/playoffs', label: 'Eastern Conference Playoffs' },
+    { href: '/west', label: 'Western Conference Wild Card' },
+    { href: '/west/playoffs', label: 'Western Conference Playoffs' },
+];
 ---
-<footer class="footer sm:footer-horizontal footer-center py-10">
 
-    <aside>
-
-        <p class="mb-4">
+<footer class="footer sm:footer-horizontal text-base-content py-10 border-t border-base-300">
+    <nav aria-label="Site navigation">
+        <h6 class="footer-title uppercase tracking-wide text-base-content">Standings</h6>
+        {links.map(({ href, label }) => (
+            <a href={href} class="link link-hover block">{label}</a>
+        ))}
+    </nav>
+    <aside class="md:ml-auto">
+        <p class="mb-3 text-sm md:justify-self-end">
             Built by <Link href="https://johnzanussi.com/">John Zanussi</Link> with <Link href="https://astro.build/">Astro</Link> and <Link href="https://daisyui.com/">daisyUI</Link>.
         </p>
-
-        <p class="mb-4">
+        <p class="mb-3 text-sm md:justify-self-end">
             Inspired by <Link href="https://www.reddit.com/r/hockey/comments/1jn7rlh/wildcard_races_mar_29/">u/Sarke1</Link>.
         </p>
-
-        <p>View the code on <Link href="https://github.com/johnzanussi/nhl-wildcard-races">GitHub</Link>.</p>
-
+        <p class="text-sm md:justify-self-end">
+            View the code on <Link href="https://github.com/johnzanussi/nhl-wildcard-races">GitHub</Link>.
+        </p>
     </aside>
-
 </footer>
