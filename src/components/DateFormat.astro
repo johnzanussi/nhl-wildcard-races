@@ -8,7 +8,13 @@ const { ...props } = Astro.props;
 const dateIso = new Date().toISOString();
 ---
 
-<time data-build-time datetime={dateIso} {...props}>&nbsp;</time>
+<time
+    data-build-time
+    datetime={dateIso}
+    {...props}
+>
+    &nbsp;
+</time>
 
 <script>
 document.querySelectorAll('time[data-build-time]').forEach((el) => {

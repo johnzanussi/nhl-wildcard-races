@@ -1,0 +1,31 @@
+---
+---
+
+<label class="label text-sm text-base-content">
+    <input
+        id="stats-toggle"
+        type="checkbox"
+        class="toggle toggle-xs lg:toggle-md"
+        title="Toggle stats columns"
+        checked
+    />
+    Stats
+</label>
+
+<script is:inline>
+    if (document.documentElement.classList.contains('stats-hidden')) {
+        document.getElementById('stats-toggle').checked = false;
+    }
+</script>
+
+<script>
+import { initLocalStorageToggle } from '@/scripts/local-storage-toggle';
+
+initLocalStorageToggle({
+    toggleId: 'stats-toggle',
+    storageKey: 'stats-visible',
+    getChecked: () => !document.documentElement.classList.contains('stats-hidden'),
+    apply: (checked) => document.documentElement.classList.toggle('stats-hidden', !checked),
+    toStorageValue: (checked) => checked ? 'true' : 'false',
+});
+</script>

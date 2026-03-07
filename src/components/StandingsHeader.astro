@@ -9,40 +9,26 @@ const statColumns = [
 ];
 ---
 
-<div class="standings-header-grid grid items-center gap-x-1 border-b bg-base-100 border-base-300 p-1.5 md:p-2 mb-1 md:mb-2">
-    <div class="standings-header-cell w-(--standings-col-rank)">
-        Rank
+<div class="flex items-center gap-x-1 border-b bg-base-100 border-base-300 py-1.5 md:py-2 mb-1 md:mb-2">
+    <div class="shrink-0 grid items-center gap-x-1 standings-header-fixed-grid px-1 sm:px-2" style="width: var(--standings-left-column-width)">
+        <div class="standings-header-cell w-(--standings-col-rank)">
+            Rank
+        </div>
+        <div class="standings-header-cell w-(--standings-col-team) standings-header-team-cell">
+            Team
+        </div>
+        {statColumns.map(({ key, tooltip }) => (
+            <Tooltip
+                as="div"
+                data-stat-cell
+                content={tooltip}
+                class="standings-header-cell w-(--standings-col-stat) justify-center"
+            >
+                <span class="cursor-help underline decoration-dotted decoration-current/60">{key}</span>
+            </Tooltip>
+        ))}
     </div>
-    <div class="standings-header-cell w-(--standings-col-team)">
-        Team
-    </div>
-    {statColumns.map(({ key, tooltip }) => (
-        <Tooltip
-            as="div"
-            data-stat-cell
-            content={tooltip}
-            class="standings-header-cell w-(--standings-col-stat) justify-center"
-        >
-            <span class="cursor-help underline decoration-dotted decoration-current/60">{key}</span>
-        </Tooltip>
-    ))}
-    <div class="standings-header-cell ps-1 flex justify-between w-full">
+    <div class="standings-header-cell ps-2 sm:ps-3 flex justify-between min-w-0 flex-1">
         <span>Schedule</span>
-        <label class="label font-normal">
-            Toggle Stats
-            <input id="stats-toggle" type="checkbox" class="toggle toggle-xs" title="Toggle stats columns" checked />
-        </label>
     </div>
 </div>
-
-<script>
-import { initLocalStorageToggle } from '@/scripts/local-storage-toggle';
-
-initLocalStorageToggle({
-    toggleId: 'stats-toggle',
-    storageKey: 'stats-visible',
-    getChecked: () => !document.documentElement.classList.contains('stats-hidden'),
-    apply: (checked) => document.documentElement.classList.toggle('stats-hidden', !checked),
-    toStorageValue: (checked) => checked ? 'true' : 'false',
-});
-</script>

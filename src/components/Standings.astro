@@ -1,9 +1,8 @@
 ---
-import { getConfStandings, getConferences, type ConferenceKey } from '@/data/Standings.ts';
+import { getConfStandings, type ConferenceKey } from '@/data/Standings.ts';
 import TeamCard from '@/components/Team/Card.astro';
 import StandingsHeader from '@/components/StandingsHeader.astro';
 import Divider from '@/components/Divider.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
 import TeamSchedule from '@/components/TeamSchedule.astro';
 
 type Props = {
@@ -22,52 +21,6 @@ const wildCardDividerAt = isPlayoffs ? 5 : null;
 const bubbleDividerAt = isPlayoffs ? 7 : 1;
 ---
 
-<div
-    class="flex my-4 lg:my-8 items-center justify-start gap-3 mb-2"
-    style="view-transition-name: standings-controls"
->
-
-    <div
-        class="tabs tabs-lg tabs-box md:w-1/2"
-        role="tablist"
-    >
-        {getConferences().map(({ label, key }) => (
-            <a
-                role="tab"
-                aria-selected={key === conference}
-                class:list={['tab grow', {
-                    'tab-active': key === conference,
-                }]}
-                href={`/${key}${isPlayoffs ? '/playoffs' : ''}`}
-            >
-                {label}
-            </a>
-        ))}
-    </div>
-
-    <div>
-        <label class="label text-sm">
-            <input
-                type="checkbox"
-                class="toggle toggle-sm"
-                checked={isPlayoffs}
-                data-href={`/${conference}${isPlayoffs ? '' : '/playoffs'}`}
-            />
-            Show Playoff Teams
-        </label>
-        <script>
-            document.querySelector('input[data-href]')?.addEventListener('change', (e) => {
-                location.href = (e.currentTarget as HTMLInputElement).getAttribute('data-href') || '';
-            });
-        </script>
-    </div>
-
-    <div class="md:ml-auto">
-        <ThemeToggle />
-    </div>
-
-</div>
-
 <div class="my-6" style="view-transition-name: standings-grid">
     <div class="sticky top-0 z-20 overflow-x-hidden">
         <StandingsHeader />
@@ -76,7 +29,7 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
     <div class="schedule-scroll overflow-x-auto">
         <div class="min-w-max">
             <div class="flex items-start">
-                <div class="sticky left-0 z-10 bg-base-100">
+                <div class="sticky left-0 z-10 bg-base-100 shrink-0 w-(--standings-sticky-column-width)">
                     {confStandings.map((team, i) => {
                         const showWildCardDivider = i === wildCardDividerAt;
                         const showNoPlayoffsDivider = i === bubbleDividerAt;
@@ -101,7 +54,7 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
                     })}
                 </div>
 
-                <div class="flex-1">
+                <div class="flex-1 min-w-0">
                     <div class="min-w-max">
                         {confStandings.map((team, i) => {
                             const showWildCardDivider = i === wildCardDividerAt;
@@ -135,7 +88,6 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
         </div>
     </div>
 </div>
-
 
 <script>
     import '@/scripts/teams';

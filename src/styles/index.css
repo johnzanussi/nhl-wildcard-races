@@ -2,7 +2,7 @@
 
 @plugin "daisyui" {
     themes:
-        nord --default,
+        lofi --default,
         sunset; /* dark theme — name defined in src/config/index.ts */
 }
 
@@ -19,6 +19,20 @@
         --standings-col-team: 205px;
         --standings-col-stat: 40px;
         --standings-row-height: 80px;
+        --standings-row-padding-x: 0.25rem;
+        --standings-grid-width: calc(
+            var(--standings-col-rank) + var(--standings-col-team) +
+            4 * var(--standings-col-stat) + 5 * 0.25rem
+        );
+        --standings-left-column-width: calc(
+            var(--standings-grid-width) + 2 * var(--standings-row-padding-x)
+        );
+        --standings-gap-x: 0.25rem;
+        --standings-schedule-padding-x: 0.5rem;
+        --standings-sticky-column-width: calc(
+            var(--standings-left-column-width) + var(--standings-gap-x) +
+            var(--standings-schedule-padding-x)
+        );
     }
 
     @media (max-width: 640px)  {
@@ -26,6 +40,12 @@
             --standings-col-rank: 25px;
             --standings-col-team: 30px;
             --standings-col-stat: 20px;
+        }
+    }
+    @media (min-width: 640px) {
+        :root {
+            --standings-row-padding-x: 0.5rem;
+            --standings-schedule-padding-x: 0.75rem;
         }
     }
     @media (min-width: 768px) {
@@ -53,8 +73,15 @@
         1fr;
 }
 
+.standings-header-fixed-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        var(--standings-col-team)
+        repeat(4, var(--standings-col-stat));
+}
+
 @utility standings-row-base {
-    @apply h-(--standings-row-height) px-1 sm:px-2 mb-2 bg-base-200 hover:bg-base-300;
+    @apply h-(--standings-row-height) px-2 mb-2 bg-base-200 hover:bg-base-300;
 }
 
 @utility standings-header-cell {
@@ -68,11 +95,29 @@ html.stats-hidden .stat-points-back {
 html.stats-hidden .standings-row-grid {
     grid-template-columns:
         var(--standings-col-rank)
-        var(--standings-col-team);
+        1fr;
+}
+@media (max-width: 639px) {
+    html.stats-hidden .standings-team-cell {
+        justify-content: center;
+    }
 }
 html.stats-hidden .standings-header-grid {
     grid-template-columns:
         var(--standings-col-rank)
         var(--standings-col-team)
         1fr;
+}
+html.stats-hidden .standings-header-fixed-grid {
+    grid-template-columns:
+        var(--standings-col-rank)
+        1fr;
+}
+html.stats-hidden .standings-header-team-cell {
+    justify-self: center;
+}
+html.stats-hidden {
+    --standings-grid-width: calc(
+        var(--standings-col-rank) + var(--standings-col-team) + 0.25rem
+    );
 }

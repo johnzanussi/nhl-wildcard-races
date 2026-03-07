@@ -37,7 +37,7 @@ const rankDisplay = getRankDisplay(team);
 >
 
     <div class="flex flex-col items-center justify-center">
-        <span class="text-md font-bold md:text-xl leading-none">
+        <span class="flex items-end font-bold text-xl leading-none h-[25px] sm:h-auto">
             {rankDisplay.primary}
         </span>
         {rankDisplay.sub && (
@@ -47,7 +47,7 @@ const rankDisplay = getRankDisplay(team);
         )}
     </div>
 
-    <div class="flex flex-col md:flex-row md:items-center">
+    <div class="standings-team-cell flex flex-col md:flex-row md:items-center">
         <div class="flex items-center flex-col sm:flex-row sm:gap-1">
             <Logo
                 teamCode={team.teamCode}

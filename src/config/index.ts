@@ -1,2 +1,2 @@
 export const DARK_THEME = 'sunset';
-export const LIGHT_THEME = 'light';
+export const LIGHT_THEME = 'lofi';

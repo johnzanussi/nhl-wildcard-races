@@ -16,8 +16,12 @@ export function initLocalStorageToggle({
     apply,
     toStorageValue,
 }: LocalStorageToggleOptions): void {
+
     const toggle = document.getElementById(toggleId) as HTMLInputElement | null;
-    if (!toggle) return;
+
+    if (!toggle) {
+        return;
+    }
 
     toggle.checked = getChecked();
 

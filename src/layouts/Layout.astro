@@ -2,6 +2,7 @@
 import { Font } from 'astro:assets';
 import DateFormat from '@/components/DateFormat.astro';
 import Footer from '@/components/Footer.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
 
 import Logo from '@/assets/logo.svg';
 
@@ -121,7 +122,6 @@ const breadcrumbSchema = breadcrumbs ? {
 	}
 </script>
 
-
 {!isDev && (
     <script
         is:inline
@@ -133,22 +133,27 @@ const breadcrumbSchema = breadcrumbs ? {
 )}
 </head>
 <body class="font-inter">
-<main class="container mx-auto py-4 px-2 md:py-8 lg:p-8">
+<main class="container mx-auto p-3 md:py-8 lg:px-8">
 
-	<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-y-1 py-2">
+    <header class="grid grid-cols-[1fr_auto] md:grid-cols-[auto_1fr_auto] gap-x-6 gap-y-3 items-center">
 
-		<div class="flex items-center justify-center md:justify-start gap-3">
-			<Logo class="h-7 shrink-0 text-orange-600 dark:text-orange-400" />
-			<h1 class="text-2xl md:text-3xl font-bold">
-				NHL Wild Card Races
-			</h1>
-		</div>
+        <div class="min-w-0">
+            <div class="flex items-center gap-3 mb-1">
+                <Logo class="h-7 shrink-0 text-orange-600 dark:text-orange-400" />
+                <h1 class="text-2xl md:text-3xl font-bold whitespace-nowrap">NHL Wild Card Races</h1>
+            </div>
+            <p class="text-xs text-base-content/60">
+                Last updated <DateFormat />
+            </p>
+        </div>
 
-		<p class="text-xs text-base-content/60 text-center md:text-right">
-			Last updated <DateFormat />
-		</p>
+        <slot name="header" />
 
-	</div>
+        <div class="row-start-1 col-start-2 md:col-start-3 self-start md:self-center">
+            <ThemeToggle />
+        </div>
+
+    </header>
 
 	<slot />
 
