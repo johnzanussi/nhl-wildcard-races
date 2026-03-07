@@ -1,5 +1,6 @@
 import captureWebsite from 'capture-website';
 import { spawn } from 'node:child_process';
+import { unlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { AstroIntegration } from 'astro';
 
@@ -26,8 +27,16 @@ export default function captureScreenshots(): AstroIntegration {
                 try {
                     for (const pathname of pathnames) {
                         const slug = pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-');
+                        const outPath = resolve('./public', `screenshot-${slug}.jpg`);
                         console.log(`📸 ${pathname} → screenshot-${slug}.jpg`);
-                        await captureWebsite.file(`${BASE}${pathname}`, resolve('./public', `screenshot-${slug}.jpg`), {
+                        try {
+                            await unlink(outPath);
+                        } catch (err) {
+                            if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+                                throw err;
+                            }
+                        }
+                        await captureWebsite.file(`${BASE}${pathname}`, outPath, {
                             width: 1200, height: 630, type: 'jpeg', quality: 0.9, scaleFactor: 1, delay: 1,
                         });
                     }

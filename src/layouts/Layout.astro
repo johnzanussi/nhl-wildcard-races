@@ -3,8 +3,7 @@ import { Font } from 'astro:assets';
 import DateFormat from '@/components/DateFormat.astro';
 import Footer from '@/components/Footer.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
-
-import Logo from '@/assets/logo.svg';
+import SiteLogo from '@/components/SiteLogo.astro';
 
 import '@/styles/index.css';
 import { DARK_THEME, LIGHT_THEME } from '@/config';
@@ -13,13 +12,15 @@ interface Props {
     title?: string;
     description?: string;
     breadcrumbs?: { name: string; item: string }[];
+    h2?: string;
+    additionalSchemas?: object[];
 }
 
-const { title: titleProp, description: descriptionProp, breadcrumbs } = Astro.props;
+const { title: titleProp, description: descriptionProp, breadcrumbs, h2, additionalSchemas } = Astro.props;
 
 const isDev = import.meta.env.DEV;
 
-const defaultTitle = 'NHL Wild Card Races | Playoff Standings Tracker';
+const defaultTitle = 'NHL Wild Card | Playoff Standings Tracker';
 const defaultDescription = 'Follow the NHL playoff race with wild card standings. Track teams battling for playoff spots in both conferences.';
 const siteUrl = 'https://nhlwildcard.com';
 
@@ -90,7 +91,7 @@ const breadcrumbSchema = breadcrumbs ? {
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121C22" />
 
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="NHL Wild Card Races" />
+<meta name="apple-mobile-web-app-title" content="NHL Wild Card" />
 
 <meta name="generator" content={Astro.generator} />
 
@@ -99,6 +100,11 @@ const breadcrumbSchema = breadcrumbs ? {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="NHL Wild Card" />
+<meta property="og:image:alt" content={`${title} - NHL Wild Card screenshot`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalUrl} />
@@ -110,6 +116,9 @@ const breadcrumbSchema = breadcrumbs ? {
 {breadcrumbSchema && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
+{additionalSchemas?.map(schema => (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}
 <script is:inline define:vars={{ DARK_THEME, LIGHT_THEME }}>
 	const savedTheme = localStorage.getItem('theme');
 	if (savedTheme === DARK_THEME || savedTheme === LIGHT_THEME) {
@@ -138,10 +147,7 @@ const breadcrumbSchema = breadcrumbs ? {
     <header class="grid grid-cols-[1fr_auto] md:grid-cols-[auto_1fr_auto] gap-x-6 gap-y-3 items-center">
 
         <div class="min-w-0">
-            <div class="flex items-center gap-3 mb-1">
-                <Logo class="h-7 shrink-0 text-orange-600 dark:text-orange-400" />
-                <h1 class="text-2xl md:text-3xl font-bold whitespace-nowrap">NHL Wild Card Races</h1>
-            </div>
+            <SiteLogo />
             <p class="text-xs text-base-content/60">
                 Last updated <DateFormat />
             </p>
@@ -154,6 +160,8 @@ const breadcrumbSchema = breadcrumbs ? {
         </div>
 
     </header>
+
+    {h2 && <h2 class="sr-only">{h2}</h2>}
 
 	<slot />
 

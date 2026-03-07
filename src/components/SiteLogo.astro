@@ -1,0 +1,21 @@
+---
+import Logo from '@/assets/logo.svg';
+
+interface Props {
+    title?: string;
+}
+
+const {
+    title = 'NHL Wild Card',
+} = Astro.props;
+---
+
+<div class="flex items-center gap-3 mb-1">
+
+    <Logo class="h-7 shrink-0 text-orange-600 dark:text-orange-400" />
+
+    <h1 class="text-2xl md:text-3xl font-bold whitespace-nowrap">
+        {title}
+    </h1>
+
+</div>

@@ -39,13 +39,13 @@ const bubbleDividerAt = isPlayoffs ? 7 : 1;
                                 <TeamCard team={team} />
 
                                 {showWildCardDivider && (
-                                    <Divider class="divider-accent">
+                                    <Divider class="divider-accent before:w-[75px] before:shrink-0">
                                         Wild Card
                                     </Divider>
                                 )}
 
                                 {showNoPlayoffsDivider && (
-                                    <Divider class="divider-error dark:divider-secondary">
+                                    <Divider class="divider-error dark:divider-secondary before:w-[75px] before:shrink-0">
                                         Bubble
                                     </Divider>
                                 )}

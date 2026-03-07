@@ -20,7 +20,7 @@ let pageDescription: string;
 let breadcrumbs: { name: string; item: string }[];
 
 if (isPlayoffs) {
-    pageTitle = `${conferenceLabel} Conference Playoff Picture 2025-26 | NHL Wild Card Races`;
+    pageTitle = `${conferenceLabel} Conference Playoff Picture 2025-26 | NHL Wild Card`;
     pageDescription = `See which ${conferenceLabel} Conference teams have clinched NHL playoff spots for 2025-26.`;
     breadcrumbs = [
         { name: `${conferenceLabel} Conference`, item: conferenceUrl },
@@ -30,15 +30,25 @@ if (isPlayoffs) {
     const divisionsText = conference === 'east'
         ? 'Metropolitan and Atlantic Divisions'
         : 'Central and Pacific Divisions';
-    pageTitle = `${conferenceLabel} Conference Wild Card Standings 2025-26 | NHL Wild Card Races`;
+    pageTitle = `${conferenceLabel} Conference Wild Card Standings 2025-26 | NHL Wild Card`;
     pageDescription = `Track the 2025-26 ${conferenceLabel} Conference NHL wild card race. Live standings for teams battling for playoff spots in the ${divisionsText}.`;
     breadcrumbs = [
         { name: `${conferenceLabel} Conference`, item: conferenceUrl },
     ];
 }
+
+const h2Text = isPlayoffs
+    ? `${conferenceLabel} Conference Playoff Picture 2025-26`
+    : `${conferenceLabel} Conference Wild Card Standings 2025-26`;
+
 ---
 
-<Layout title={pageTitle} description={pageDescription} breadcrumbs={breadcrumbs}>
+<Layout
+    title={pageTitle}
+    description={pageDescription}
+    breadcrumbs={breadcrumbs}
+    h2={h2Text}
+>
 
     <div
         slot="header"
