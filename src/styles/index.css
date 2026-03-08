@@ -58,6 +58,11 @@
 
 }
 
+/* Unselected tab text: meet 4.5:1 contrast on tab background (Lighthouse) */
+:root:not([data-theme=sunset]) .tabs-box .tab:not(.tab-active) {
+    color: #5a5a5a;
+}
+
 .standings-row-grid {
     grid-template-columns:
         var(--standings-col-rank)
