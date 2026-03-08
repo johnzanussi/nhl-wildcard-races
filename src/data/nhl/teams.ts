@@ -139,7 +139,7 @@ export const teams ={
     },
     "UTA": {
         "id": 59,
-        "name": "Utah Hockey Club",
+        "name": "Utah Mammoth",
         "code": "UTA"
     },
     "VAN": {
