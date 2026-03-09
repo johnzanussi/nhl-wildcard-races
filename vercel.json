@@ -21,6 +21,12 @@
     ],
     "redirects": [
         {
+            "source": "/:path*",
+            "has": [{ "type": "host", "value": "www.nhlwildcard.com" }],
+            "destination": "https://nhlwildcard.com/:path*",
+            "permanent": true
+        },
+        {
             "source": "/",
             "destination": "/east",
             "permanent": true
