@@ -28,9 +28,6 @@ export default defineConfig({
         cssVariable: '--font-inter',
         weights: [400, 500, 600, 700],
     }],
-    security: {
-        csp: true,
-    },
     vite: {
         plugins: [tailwindcss()],
     },
