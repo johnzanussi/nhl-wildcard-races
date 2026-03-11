@@ -18,15 +18,15 @@
         "screenshots": "CAPTURE_SCREENSHOTS=1 npx astro build"
     },
     "dependencies": {
-        "@astrojs/sitemap": "^3.7.0",
+        "@astrojs/sitemap": "^3.7.1",
         "@tailwindcss/vite": "^4.2.1",
-        "astro": "^5.18.0",
+        "astro": "^6.0.2",
         "capture-website": "^5.1.0",
         "ky": "^1.14.3",
         "tailwindcss": "^4.2.1"
     },
     "devDependencies": {
-        "@astrojs/check": "^0.9.2",
+        "@astrojs/check": "^0.9.7",
         "@types/node": "^25.3.3",
         "daisyui": "^5.5.19",
         "dotenv": "^17.3.1",

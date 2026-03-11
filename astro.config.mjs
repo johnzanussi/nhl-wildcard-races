@@ -22,13 +22,14 @@ export default defineConfig({
         apiCacheToolbar({ cacheDir: 'nhl' }),
         captureScreenshots(),
     ],
-    experimental: {
-        fonts: [{
-            provider: fontProviders.google(),
-            name: 'Inter',
-            cssVariable: '--font-inter',
-            weights: [400, 500, 600, 700],
-        }],
+    fonts: [{
+        provider: fontProviders.google(),
+        name: 'Inter',
+        cssVariable: '--font-inter',
+        weights: [400, 500, 600, 700],
+    }],
+    security: {
+        csp: true,
     },
     vite: {
         plugins: [tailwindcss()],
