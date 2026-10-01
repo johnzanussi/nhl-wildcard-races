@@ -6,17 +6,22 @@ import { type TeamCode } from '@/data/nhl/teams';
 export * from './types';
 export * from './teams';
 
-export const REGULAR_SEASON_GAMES = 82;
+export const REGULAR_SEASON_GAMES = 84;
 export const WILDCARD_SPOTS = 2;
 
 const NHL_API_BASE_URL = 'https://api-web.nhle.com/v1';
 
-const getCurrentSeason = () => {
+export const getCurrentSeason = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     const startYear = month >= 10 ? year : year - 1;
     return `${startYear}${startYear + 1}`;
+};
+
+// e.g. '2026-27'
+export const getSeasonLabel = (season = getCurrentSeason()) => {
+    return `${season.slice(0, 4)}-${season.slice(-2)}`;
 };
 
 const nhlApi = withCache(ky.create({
