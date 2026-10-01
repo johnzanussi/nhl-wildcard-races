@@ -26,8 +26,8 @@ A [GitHub action](https://github.com/johnzanussi/nhl-wildcard-races/blob/main/.g
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm
+- Node.js (v22.12 or higher)
+- pnpm (run `corepack enable` to use the version pinned in `package.json`)
 
 ### Installation
 
@@ -39,12 +39,12 @@ A [GitHub action](https://github.com/johnzanussi/nhl-wildcard-races/blob/main/.g
 
 2. Install dependencies
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Start the development server
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 4. Open your browser and navigate to `http://localhost:4321`
@@ -52,7 +52,7 @@ A [GitHub action](https://github.com/johnzanussi/nhl-wildcard-races/blob/main/.g
 ## Building for Production
 
 ```bash
-npm run build
+pnpm build
 ```
 
 The built application will be in the `dist/` directory.

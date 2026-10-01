@@ -15,23 +15,24 @@
         "astro": "astro",
         "check": "astro check",
         "test:track-games": "dotenv -e .env -- tsx scripts/track-games.ts",
-        "screenshots": "CAPTURE_SCREENSHOTS=1 npx astro build"
+        "screenshots": "CAPTURE_SCREENSHOTS=1 astro build"
     },
     "dependencies": {
-        "@astrojs/sitemap": "^3.7.1",
-        "@tailwindcss/vite": "^4.2.1",
-        "astro": "^6.0.2",
+        "@astrojs/sitemap": "^3.7.4",
+        "@tailwindcss/vite": "^4.3.3",
+        "astro": "^7.3.5",
         "capture-website": "^5.1.0",
-        "ky": "^1.14.3",
-        "tailwindcss": "^4.2.1"
+        "ky": "^2.1.0",
+        "tailwindcss": "^4.3.3"
     },
     "devDependencies": {
-        "@astrojs/check": "^0.9.7",
-        "@types/node": "^25.3.3",
-        "daisyui": "^5.5.19",
-        "dotenv": "^17.3.1",
+        "@astrojs/check": "^0.9.10",
+        "@types/node": "^26.6.3",
+        "daisyui": "^5.7.46",
+        "dotenv": "^18.0.4",
         "dotenv-cli": "^11.0.0",
-        "tsx": "^4.21.0",
-        "typescript": "^5.9.3"
-    }
+        "tsx": "^4.23.15",
+        "typescript": "^6.0.3"
+    },
+    "packageManager": "pnpm@12.8.1"
 }

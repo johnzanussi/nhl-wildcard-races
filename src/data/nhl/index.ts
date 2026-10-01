@@ -25,7 +25,7 @@ export const getSeasonLabel = (season = getCurrentSeason()) => {
 };
 
 const nhlApi = withCache(ky.create({
-    prefixUrl: NHL_API_BASE_URL,
+    prefix: NHL_API_BASE_URL,
 }));
 
 export const getTeamSchedule = async (teamCode: TeamCode, season = getCurrentSeason()) => {

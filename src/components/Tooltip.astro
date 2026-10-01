@@ -1,8 +1,10 @@
 ---
+import type { HTMLTag } from 'astro/types';
+
 export type Props = {
     content: string;
     placement?: 'top' | 'bottom';
-    as?: string;
+    as?: HTMLTag;
     class?: string;
     [key: string]: unknown;
 };
