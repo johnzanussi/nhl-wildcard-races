@@ -55,6 +55,11 @@ export const getTeamLogoUrl = (
     provider: LogoProvider = 'espn',
     type: LogoType = 'light'
 ): string => {
+    const team = teams[teamCode];
+    // ESPN no longer serves some team logos, so those teams use the NHL logo instead
+    if ('logoProvider' in team) {
+        provider = team.logoProvider as LogoProvider;
+    }
     if (provider === 'espn') {
         return `https://a.espncdn.com/i/teamlogos/nhl/500/${getEspnTeamCode(teamCode)}.png`;
     }

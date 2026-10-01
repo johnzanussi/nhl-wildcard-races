@@ -150,7 +150,8 @@ export const teams ={
     "VGK": {
         "id": 54,
         "name": "Vegas Golden Knights",
-        "code": "VGK"
+        "code": "VGK",
+        "logoProvider": "nhl"
     },
     "WPG": {
         "id": 52,
