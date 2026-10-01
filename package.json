@@ -23,6 +23,7 @@
         "astro": "^7.3.5",
         "capture-website": "^5.1.0",
         "ky": "^2.1.0",
+        "sharp": "^0.35.5",
         "tailwindcss": "^4.3.3"
     },
     "devDependencies": {
