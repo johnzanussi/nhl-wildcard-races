@@ -56,7 +56,7 @@ export const getTeamLogoUrl = (
     type: LogoType = 'light'
 ): string => {
     const team = teams[teamCode];
-    // Teams can opt out of the ESPN logo with logoProvider (VGK does because ESPN's VGK.png returned 404)
+    // ESPN no longer serves some team logos, so those teams use the NHL logo instead
     if ('logoProvider' in team) {
         provider = team.logoProvider as LogoProvider;
     }
