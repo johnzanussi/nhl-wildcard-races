@@ -57,7 +57,7 @@ export const withCache = (kyInstance: KyInstance, options: Options) => {
     return kyInstance.extend({
         hooks: {
             beforeRequest: [
-                (request) => {
+                ({ request }) => {
                     if (!import.meta.env.DEV) {
                         return undefined;
                     }
@@ -104,7 +104,7 @@ export const withCache = (kyInstance: KyInstance, options: Options) => {
                 },
             ],
             afterResponse: [
-                async (request, _options, response) => {
+                async ({ request, response }) => {
                     if (!import.meta.env.DEV) {
                         return;
                     }

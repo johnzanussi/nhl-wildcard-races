@@ -17,7 +17,7 @@ export default function captureScreenshots(): AstroIntegration {
                 const PORT = 4323;
                 const BASE = `http://localhost:${PORT}`;
 
-                const server = spawn('npx', ['astro', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
+                const server = spawn('pnpm', ['astro', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
 
                 const deadline = Date.now() + 30000;
                 while (Date.now() < deadline) {

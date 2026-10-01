@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
+import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import apiCacheToolbar from './integrations/nhl-cache-toolbar/index.ts';
 import captureScreenshots from './integrations/capture-screenshots/index.ts';
 
@@ -14,7 +14,7 @@ export default defineConfig({
             filter: (page) => page !== 'https://nhlwildcard.com/',
             serialize(item) {
                 item.lastmod = new Date().toISOString();
-                item.changefreq = 'daily';
+                item.changefreq = ChangeFreqEnum.DAILY;
                 item.priority = item.url.includes('/playoffs') ? 0.8 : 0.9;
                 return item;
             },
