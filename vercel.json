@@ -44,6 +44,10 @@
         {
             "source": "/adf093hd.js",
             "destination": "https://stats.johnzanussi.com/script.js"
+        },
+        {
+            "source": "/api/send",
+            "destination": "https://stats.johnzanussi.com/api/send"
         }
     ]
 }
