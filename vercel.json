@@ -40,6 +40,10 @@
         {
             "source": "/api/seCs15RsxqlA",
             "destination": "https://plausible.io/api/event"
+        },
+        {
+            "source": "/adf093hd.js",
+            "destination": "https://stats.johnzanussi.com/script.js"
         }
     ]
 }
